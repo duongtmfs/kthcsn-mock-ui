@@ -536,17 +536,21 @@
         border: 1px solid var(--acc-border);
         border-radius: var(--radius-sm);
       }
-      .cb {
-        padding: 12px 14px 10px;
-      }
-
       /* FORM */
       .fsplit {
         --form-label-w: 128px;
         display: grid;
         grid-template-columns: minmax(0, 1fr) 290px;
-        gap: 12px;
-        align-items: start;
+        gap: 10px;
+        align-items: stretch;
+      }
+      .fl,
+      .fr {
+        border: 1px solid var(--acc-border);
+        border-radius: var(--radius-md);
+        padding: 10px 12px;
+        min-width: 0;
+        background: var(--background-bg-primary);
       }
       .fl {
         display: flex;
@@ -557,8 +561,6 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
-        border-left: 1px solid var(--acc-border);
-        padding-left: 14px;
       }
       .fr2 {
         display: grid;
@@ -1423,10 +1425,6 @@
           gap: 10px;
         }
         .fr {
-          border-left: none;
-          padding-left: 0;
-          border-top: 1px solid var(--acc-border);
-          padding-top: 10px;
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 8px 12px;
@@ -1493,10 +1491,6 @@
           gap: 12px;
         }
         .fr {
-          border-left: none;
-          padding-left: 0;
-          border-top: 1px solid var(--acc-border);
-          padding-top: 12px;
           display: flex;
           flex-direction: column;
           gap: 8px;
@@ -1676,7 +1670,7 @@
             <!-- TOP FORM -->
             <div class="st" id="ST">
               <div class="pad" style="padding-bottom: 0">
-                <div class="card">
+                <div class="card" style=" border: none;">
                   <div class="cb">
                     <div class="fsplit">
                       <div class="fl">
