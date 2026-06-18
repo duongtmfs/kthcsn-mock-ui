@@ -396,9 +396,11 @@
         padding-top: 12px;
       }
       .st {
+        overflow-y: auto;
+        overflow-x: hidden;
         flex-shrink: 0;
-        height: auto;
-        overflow: visible;
+        min-height: 0;
+        height: 120px;
       }
       .st.col {
         height: 0 !important;
@@ -542,144 +544,21 @@
       .fsplit {
         --form-label-w: 128px;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(360px, 1.05fr);
+        grid-template-columns: minmax(0, 1fr) 290px;
         gap: 12px;
         align-items: start;
       }
       .fl {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        grid-template-rows: auto auto;
-        gap: 8px 12px;
-        align-items: stretch;
-      }
-      .fl > .fr2 {
-        grid-template-columns: 1fr;
-        align-items: stretch;
-        gap: 4px;
-        min-width: 0;
-      }
-      .fl > .fr2 > label {
-        text-align: left;
-        white-space: nowrap;
-      }
-      .fl > .fr2.fr2--ta > label {
-        padding-top: 0;
-      }
-      .fl-g-loai {
-        grid-column: 1;
-        grid-row: 1;
-      }
-      .fl-g-cbs {
-        grid-column: 2;
-        grid-row: 1;
-        justify-content: flex-end;
-      }
-      .fl-g-tkdv {
-        grid-column: 3 / 5;
-        grid-row: 1;
-      }
-      .fl-g-tkdt {
-        grid-column: 1;
-        grid-row: 2;
-      }
-      .fl-g-tendt {
-        grid-column: 2;
-        grid-row: 2;
-      }
-      .fl-g-madt {
-        grid-column: 3;
-        grid-row: 2;
-      }
-      .fl-g-diachi {
-        grid-column: 4;
-        grid-row: 2;
-      }
-      .fl > .fr2.fr2--cbs {
         display: flex;
         flex-direction: column;
-        gap: 4px;
-      }
-      .fl > .fr2.fr2--cbs .cbs-inline {
-        flex: 1;
-        align-items: flex-end;
-        padding-bottom: 2px;
-      }
-      .cbs-inline {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-shrink: 0;
-      }
-      .cbs-inline label {
-        min-width: unset;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        cursor: pointer;
-        color: var(--acc-text-secondary);
-        font-size: 12px;
-        white-space: nowrap;
-      }
-      .cbs-inline input {
-        accent-color: var(--color-brand-600);
-        cursor: pointer;
-      }
-      .fl textarea.fc {
-        min-height: 44px;
+        gap: 8px;
       }
       .fr {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        grid-template-rows: auto auto;
-        gap: 8px 12px;
-        align-items: stretch;
-      }
-      .fr > .fr2 {
-        grid-template-columns: 1fr;
-        align-items: stretch;
-        gap: 4px;
-        min-width: 0;
-      }
-      .fr > .fr2 > label {
-        text-align: left;
-        white-space: nowrap;
-      }
-      .fr-g-soc {
-        grid-column: 1;
-        grid-row: 1;
-      }
-      .fr-g-ngayct {
-        grid-column: 2;
-        grid-row: 1;
-      }
-      .fr-g-ngayht {
-        grid-column: 3;
-        grid-row: 1;
-      }
-      .fr-g-noi-dung {
-        grid-column: 1 / -1;
-        grid-row: 2;
-      }
-      .fr > .fr2.fr2--ta > label {
-        padding-top: 0;
-      }
-      .fr > .fr2.fr2--noi-dung textarea.fc {
-        height: 44px;
-        min-height: 44px;
-        resize: vertical;
-      }
-      .fsplit .fr2 {
-        grid-template-columns: 1fr;
-        align-items: stretch;
-        gap: 4px;
-      }
-      .fsplit .fr2 > label {
-        text-align: left;
-        white-space: nowrap;
-      }
-      .fsplit .fr2.fr2--ta > label {
-        padding-top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-left: 1px solid var(--acc-border);
+        padding-left: 14px;
       }
       .fr2 {
         display: grid;
@@ -800,15 +679,23 @@
 
       /* TABLE */
       .tw {
-        overflow: auto;
+        overflow-x: auto;
+        overflow-y: auto;
         max-height: 100%;
+        width: 100%;
       }
       .dt {
-        width: 100%;
+        table-layout: fixed;
         border-collapse: separate;
         border-spacing: 0;
         font-size: 12px;
-        min-width: 860px;
+      }
+      .dt th,
+      .dt td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        box-sizing: border-box;
       }
       .dt thead tr {
         background: #f8f9fa;
@@ -826,10 +713,381 @@
         border-top: none;
         white-space: nowrap;
         box-shadow: 0 1px 0 #e5e7eb;
+        overflow: visible;
       }
       .dt thead th:first-child {
         border-left: none;
       }
+
+    /* Chiều rộng cột bảng */
+      #table1 {
+        --col-stt: 56px;
+        --col-loaiNv: 160px;
+        --col-dienGiai: 360px;
+        --col-tkNo: 140px;
+        --col-tkCo: 140px;
+        --col-tkNbNo: 150px;
+        --col-tkNbCo: 150px;
+        --col-soTien: 180px;
+        --col-nguonNs: 140px;
+        --col-chuong: 150px;
+        --col-loaiKhoan: 180px;
+        --col-muc: 120px;
+        --col-tieuMuc: 150px;
+        --col-capPhat: 150px;
+        --col-duAn: 240px;
+        --col-dtth: 120px;
+        --col-thaoTac: 120px;
+        --table-min-w: calc(
+          var(--col-stt) + var(--col-loaiNv) + var(--col-dienGiai) + var(--col-tkNo) +
+            var(--col-tkCo) + var(--col-tkNbNo) + var(--col-tkNbCo) + var(--col-soTien) +
+            var(--col-nguonNs) + var(--col-chuong) + var(--col-loaiKhoan) + var(--col-muc) +
+            var(--col-tieuMuc) + var(--col-capPhat) + var(--col-duAn) + var(--col-dtth) +
+            var(--col-thaoTac)
+        );
+        width: max(100%, var(--table-min-w));
+        min-width: var(--table-min-w);
+      }
+      #table2 {
+        --col-stt: 56px;
+        --col-loaiNv: 160px;
+        --col-dienGiai: 360px;
+        --col-tkNbNo: 150px;
+        --col-tkNbCo: 150px;
+        --col-soTien: 180px;
+        --col-nguonNs: 140px;
+        --col-chuong: 150px;
+        --col-loaiKhoan: 180px;
+        --col-mucTm: 150px;
+        --col-dtth: 120px;
+        --col-thaoTac: 120px;
+        --table-min-w: calc(
+          var(--col-stt) + var(--col-loaiNv) + var(--col-dienGiai) + var(--col-tkNbNo) +
+            var(--col-tkNbCo) + var(--col-soTien) + var(--col-nguonNs) + var(--col-chuong) +
+            var(--col-loaiKhoan) + var(--col-mucTm) + var(--col-dtth) + var(--col-thaoTac)
+        );
+        width: max(100%, var(--table-min-w));
+        min-width: var(--table-min-w);
+      }
+      #table1 th.dt-col-stt,
+      #table1 td.dt-col-stt {
+        width: var(--col-stt);
+        min-width: var(--col-stt);
+        max-width: var(--col-stt);
+      }
+      #table2 th.dt-col-stt,
+      #table2 td.dt-col-stt {
+        width: var(--col-stt);
+        min-width: var(--col-stt);
+        max-width: var(--col-stt);
+      }
+      #table1 th[data-col='loaiNv'],
+      #table1 td[data-col='loaiNv'] {
+        width: var(--col-loaiNv);
+        min-width: var(--col-loaiNv);
+        max-width: var(--col-loaiNv);
+      }
+      #table1 th[data-col='dienGiai'],
+      #table1 td[data-col='dienGiai'] {
+        width: var(--col-dienGiai);
+        min-width: var(--col-dienGiai);
+        max-width: var(--col-dienGiai);
+      }
+      #table1 th[data-col='tkNo'],
+      #table1 td[data-col='tkNo'] {
+        width: var(--col-tkNo);
+        min-width: var(--col-tkNo);
+        max-width: var(--col-tkNo);
+      }
+      #table1 th[data-col='tkCo'],
+      #table1 td[data-col='tkCo'] {
+        width: var(--col-tkCo);
+        min-width: var(--col-tkCo);
+        max-width: var(--col-tkCo);
+      }
+      #table1 th[data-col='tkNbNo'],
+      #table1 td[data-col='tkNbNo'] {
+        width: var(--col-tkNbNo);
+        min-width: var(--col-tkNbNo);
+        max-width: var(--col-tkNbNo);
+      }
+      #table1 th[data-col='tkNbCo'],
+      #table1 td[data-col='tkNbCo'] {
+        width: var(--col-tkNbCo);
+        min-width: var(--col-tkNbCo);
+        max-width: var(--col-tkNbCo);
+      }
+      #table1 th[data-col='soTien'],
+      #table1 td[data-col='soTien'] {
+        width: var(--col-soTien);
+        min-width: var(--col-soTien);
+        max-width: var(--col-soTien);
+      }
+      #table2 th[data-col='loaiNv'],
+      #table2 td[data-col='loaiNv'] {
+        width: var(--col-loaiNv);
+        min-width: var(--col-loaiNv);
+        max-width: var(--col-loaiNv);
+      }
+      #table2 th[data-col='dienGiai'],
+      #table2 td[data-col='dienGiai'] {
+        width: var(--col-dienGiai);
+        min-width: var(--col-dienGiai);
+        max-width: var(--col-dienGiai);
+      }
+      #table2 th[data-col='tkNbNo'],
+      #table2 td[data-col='tkNbNo'] {
+        width: var(--col-tkNbNo);
+        min-width: var(--col-tkNbNo);
+        max-width: var(--col-tkNbNo);
+      }
+      #table2 th[data-col='tkNbCo'],
+      #table2 td[data-col='tkNbCo'] {
+        width: var(--col-tkNbCo);
+        min-width: var(--col-tkNbCo);
+        max-width: var(--col-tkNbCo);
+      }
+      #table2 th[data-col='soTien'],
+      #table2 td[data-col='soTien'] {
+        width: var(--col-soTien);
+        min-width: var(--col-soTien);
+        max-width: var(--col-soTien);
+      }
+      #table1 th[data-col='nguonNs'],
+      #table1 td[data-col='nguonNs'] {
+        width: var(--col-nguonNs);
+        min-width: var(--col-nguonNs);
+        max-width: var(--col-nguonNs);
+      }
+      #table1 th[data-col='chuong'],
+      #table1 td[data-col='chuong'] {
+        width: var(--col-chuong);
+        min-width: var(--col-chuong);
+        max-width: var(--col-chuong);
+      }
+      #table1 th[data-col='loaiKhoan'],
+      #table1 td[data-col='loaiKhoan'] {
+        width: var(--col-loaiKhoan);
+        min-width: var(--col-loaiKhoan);
+        max-width: var(--col-loaiKhoan);
+      }
+      #table1 th[data-col='muc'],
+      #table1 td[data-col='muc'] {
+        width: var(--col-muc);
+        min-width: var(--col-muc);
+        max-width: var(--col-muc);
+      }
+      #table1 th[data-col='tieuMuc'],
+      #table1 td[data-col='tieuMuc'] {
+        width: var(--col-tieuMuc);
+        min-width: var(--col-tieuMuc);
+        max-width: var(--col-tieuMuc);
+      }
+      #table1 th[data-col='capPhat'],
+      #table1 td[data-col='capPhat'] {
+        width: var(--col-capPhat);
+        min-width: var(--col-capPhat);
+        max-width: var(--col-capPhat);
+      }
+      #table1 th[data-col='duAn'],
+      #table1 td[data-col='duAn'] {
+        width: var(--col-duAn);
+        min-width: var(--col-duAn);
+        max-width: var(--col-duAn);
+      }
+      #table1 th[data-col='dtth'],
+      #table1 td[data-col='dtth'] {
+        width: var(--col-dtth);
+        min-width: var(--col-dtth);
+        max-width: var(--col-dtth);
+      }
+      #table1 th[data-col='thaoTac'],
+      #table1 td[data-col='thaoTac'] {
+        width: var(--col-thaoTac);
+        min-width: var(--col-thaoTac);
+        max-width: var(--col-thaoTac);
+      }
+      #table2 th[data-col='nguonNs'],
+      #table2 td[data-col='nguonNs'] {
+        width: var(--col-nguonNs);
+        min-width: var(--col-nguonNs);
+        max-width: var(--col-nguonNs);
+      }
+      #table2 th[data-col='chuong'],
+      #table2 td[data-col='chuong'] {
+        width: var(--col-chuong);
+        min-width: var(--col-chuong);
+        max-width: var(--col-chuong);
+      }
+      #table2 th[data-col='loaiKhoan'],
+      #table2 td[data-col='loaiKhoan'] {
+        width: var(--col-loaiKhoan);
+        min-width: var(--col-loaiKhoan);
+        max-width: var(--col-loaiKhoan);
+      }
+      #table2 th[data-col='mucTm'],
+      #table2 td[data-col='mucTm'] {
+        width: var(--col-mucTm);
+        min-width: var(--col-mucTm);
+        max-width: var(--col-mucTm);
+      }
+      #table2 th[data-col='dtth'],
+      #table2 td[data-col='dtth'] {
+        width: var(--col-dtth);
+        min-width: var(--col-dtth);
+        max-width: var(--col-dtth);
+      }
+      #table2 th[data-col='thaoTac'],
+      #table2 td[data-col='thaoTac'] {
+        width: var(--col-thaoTac);
+        min-width: var(--col-thaoTac);
+        max-width: var(--col-thaoTac);
+      }
+      .th-head {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        min-width: 0;
+      }
+      .th-label {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .th-menu-wrap {
+        position: relative;
+        flex-shrink: 0;
+      }
+      .th-menu-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 2px;
+        color: #6b7280;
+      }
+      .th-menu-btn:hover,
+      .th-menu-btn.is-open {
+        background: rgba(0, 0, 0, 0.06);
+        color: #111827;
+      }
+      .th-menu-dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        right: 0;
+        min-width: 128px;
+        background: #fff;
+        border: 1px solid var(--acc-border);
+        border-radius: 4px;
+        box-shadow: 0 4px 14px rgba(17, 24, 39, 0.12);
+        z-index: 60;
+        padding: 4px 0;
+      }
+      .th-menu-dropdown[hidden] {
+        display: none;
+      }
+      .th-menu-dropdown button {
+        display: block;
+        width: 100%;
+        padding: 7px 12px;
+        border: none;
+        background: none;
+        text-align: left;
+        font-size: 12px;
+        color: var(--acc-text-primary);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .th-menu-dropdown button:hover {
+        background: var(--acc-hover);
+      }
+      .dt thead th.is-sorted-asc .th-label::after,
+      .dt thead th.is-sorted-desc .th-label::after {
+        margin-left: 4px;
+        font-size: 10px;
+        color: var(--color-brand-600);
+      }
+      .dt thead th.is-sorted-asc .th-label::after {
+        content: '▲';
+      }
+      .dt thead th.is-sorted-desc .th-label::after {
+        content: '▼';
+      }
+      .dt thead th.dt-col-stt,
+      .dt thead th.dt-col-pinned {
+        z-index: 6;
+        background: #f8f9fa;
+      }
+      .dt tbody td.dt-col-stt,
+      .dt tbody td.dt-col-pinned {
+        position: sticky;
+        z-index: 2;
+        background: var(--background-bg-primary);
+      }
+      .dt tbody tr:nth-child(even) td.dt-col-stt,
+      .dt tbody tr:nth-child(even) td.dt-col-pinned {
+        background: var(--acc-surface-2);
+      }
+      .dt tbody tr:hover td.dt-col-stt,
+      .dt tbody tr:hover td.dt-col-pinned {
+        background: var(--acc-hover);
+      }
+      .dt thead th.dt-col-stt,
+      .dt thead th.dt-col-pinned {
+        position: sticky;
+      }
+      .dt tfoot td.dt-col-pinned {
+        position: sticky;
+        z-index: 4;
+        background: var(--background-bg-primary);
+      }
+      .dt-col-pinned-edge {
+        box-shadow: 2px 0 6px -2px rgba(17, 24, 39, 0.14);
+        border-right: 1px solid var(--acc-border-strong);
+      }
+      .dt thead th.dt-col-pinned-right,
+      .dt tbody td.dt-col-pinned-right,
+      .dt tfoot td.dt-col-pinned-right {
+        position: sticky;
+        right: 0;
+        z-index: 3;
+        background: var(--background-bg-primary);
+      }
+      .dt thead th.dt-col-pinned-right {
+        z-index: 7;
+        background: #f8f9fa;
+      }
+      .dt tbody tr:nth-child(even) td.dt-col-pinned-right {
+        background: var(--acc-surface-2);
+      }
+      .dt tbody tr:hover td.dt-col-pinned-right {
+        background: var(--acc-hover);
+      }
+      .dt tfoot td.dt-col-pinned-right {
+        z-index: 5;
+      }
+      .dt-col-pinned-right-edge {
+        box-shadow: -2px 0 6px -2px rgba(17, 24, 39, 0.14);
+        border-left: 1px solid var(--acc-border-strong);
+      }
+      .dt thead th.is-pinned-col .th-label {
+        color: var(--color-brand-600);
+      }
+      .dt .tdi,
+      .dt .tds {
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       .dt tbody tr {
         background: var(--background-bg-primary);
       }
@@ -854,9 +1112,15 @@
         vertical-align: middle;
       }
       .dt-total-label {
+        position: sticky;
+        left: 0;
+        z-index: 5;
         font-weight: 600;
         color: var(--acc-text-primary);
         text-align: left;
+        background: var(--background-bg-primary);
+        box-shadow: 2px 0 6px -2px rgba(17, 24, 39, 0.14);
+        border-right: 1px solid var(--acc-border-strong);
       }
       .dt-total-amount {
         font-weight: 700;
@@ -1172,9 +1436,6 @@
           align-items: stretch;
           gap: 4px;
         }
-        .fr .fr2 > label {
-          text-align: left;
-        }
         .g2 {
           gap: 8px 10px;
         }
@@ -1195,9 +1456,6 @@
         .tb-section-title {
           font-size: 15px;
         }
-        .dt {
-          min-width: 780px;
-        }
         .col-dropdown {
           min-width: 200px;
         }
@@ -1206,21 +1464,6 @@
         }
         .page-header-title {
           font-size: 14px;
-        }
-        .fl {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .fl-g-loai,
-        .fl-g-cbs,
-        .fl-g-tkdt,
-        .fl-g-tendt,
-        .fl-g-madt,
-        .fl-g-diachi {
-          grid-column: auto;
-          grid-row: auto;
-        }
-        .fl-g-tkdv {
-          grid-column: 1 / -1;
         }
       }
 
@@ -1254,20 +1497,12 @@
           padding-left: 0;
           border-top: 1px solid var(--acc-border);
           padding-top: 12px;
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 8px 12px;
-        }
-        .fr-g-noi-dung {
-          grid-column: 1 / -1;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
         }
         .fr .fr2 {
-          grid-template-columns: 1fr;
-          align-items: stretch;
-          gap: 4px;
-        }
-        .fr .fr2 > label {
-          text-align: left;
+          grid-template-columns: var(--form-label-w) minmax(0, 1fr);
         }
         .g2 {
           grid-template-columns: 1fr;
@@ -1317,8 +1552,10 @@
           font-size: 11px;
         }
         .dt {
-          min-width: 680px;
-          font-size: 11px;
+          table-layout: fixed;
+          border-collapse: separate;
+          border-spacing: 0;
+          font-size: 12px;
         }
         .dt thead th,
         .dt tbody td,
@@ -1363,7 +1600,7 @@
     </style>
   </head>
   <body>
-    <div class="app-layout" id="APP_LAYOUT">
+    <div class="app-layout" id="nhan-du-toan">
       <aside class="app-sidebar" aria-label="Sidebar"></aside>
       <div class="app-main">
         <header class="app-header" aria-label="Header">
@@ -1406,7 +1643,7 @@
                 />
               </svg>
             </button>
-            <h1 class="page-header-title">Thêm mới nhận dự toán/ Lệnh chi</h1>
+            <h1 class="page-header-title" >Thêm mới nhận dự toán/ Lệnh chi</h1>
           </div>
           <div class="page-header-actions">
             <button type="button" class="btn-page btn-page--ghost">
@@ -1443,52 +1680,59 @@
                   <div class="cb">
                     <div class="fsplit">
                       <div class="fl">
-                        <div class="fr2 fr2--loai fl-g-loai">
-                          <label><span class="req">* </span>Loại chứng từ</label>
-                          <select class="fc">
-                            <option value="">Chọn</option>
-                          </select>
-                        </div>
-                        <div class="fr2 fr2--cbs fl-g-cbs">
-                          <label class="fl-cbs-hd" aria-hidden="true">&nbsp;</label>
-                          <div class="cbs-inline">
+                        <div class="g2">
+                          <div class="fr2">
+                            <label><span class="req">* </span>Loại chứng từ</label>
+                            <select class="fc">
+                              <option value="">Chọn</option>
+                            </select>
+                          </div>
+                          <div class="fr2 cbs">
                             <label><input type="checkbox" /> Kỳ chính lý</label>
                             <label><input type="checkbox" /> Nộp thuế</label>
                           </div>
                         </div>
-                        <div class="fr2 fl-g-tkdv">
+                        <div class="g2">
+                          <div class="fr2">
+                            <label>Mã ĐT thanh toán</label>
+                            <select class="fc">
+                              <option value="">Chọn</option>
+                            </select>
+                          </div>
+                          <div class="fr2">
+                            <label>TK ĐT thanh toán</label>
+                            <select class="fc">
+                              <option value="">Chọn</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="g2">
+                          <div class="fr2">
+                            <label>Tên ĐT thanh toán</label>
+                            <input class="fc" placeholder="Nhập" />
+                          </div>
+                          <div class="fr2">
+                            <label>Địa chỉ ĐTTT</label>
+                            <input class="fc" placeholder="Nhập" />
+                          </div>
+                        </div>
+                        <div class="fr2">
                           <label>TK đơn vị</label>
                           <select class="fc">
                             <option>3713.1.1006789 - KBNN Khu vực I-PGD số 1</option>
                           </select>
                         </div>
-                        <div class="fr2 fl-g-tkdt">
-                          <label>TK ĐT thanh toán</label>
-                          <select class="fc">
-                            <option value="">Chọn</option>
-                          </select>
-                        </div>
-                        <div class="fr2 fl-g-tendt">
-                          <label>Tên ĐT thanh toán</label>
-                          <input class="fc" placeholder="Nhập" />
-                        </div>
-                        <div class="fr2 fl-g-madt">
-                          <label>Mã ĐT thanh toán</label>
-                          <select class="fc">
-                            <option value="">Chọn</option>
-                          </select>
-                        </div>
-                        <div class="fr2 fl-g-diachi">
-                          <label>Địa chỉ ĐTTT</label>
-                          <input class="fc" placeholder="Nhập" />
+                        <div class="fr2 fr2--ta">
+                          <label>Nội dung</label>
+                          <textarea class="fc" placeholder="Nhập"></textarea>
                         </div>
                       </div>
                       <div class="fr">
-                        <div class="fr2 fr-g-soc">
+                        <div class="fr2">
                           <label><span class="req">* </span>Số chứng từ</label>
                           <input class="fc" placeholder="Nhập" />
                         </div>
-                        <div class="fr2 fr-g-ngayct">
+                        <div class="fr2">
                           <label><span class="req">* </span>Ngày CT</label>
                           <div class="fcd">
                             <svg
@@ -1505,7 +1749,7 @@
                             18/06/2026
                           </div>
                         </div>
-                        <div class="fr2 fr-g-ngayht">
+                        <div class="fr2">
                           <label><span class="req">* </span>Ngày HT</label>
                           <div class="fcd">
                             <svg
@@ -1522,14 +1766,21 @@
                             18/06/2026
                           </div>
                         </div>
-                        <div class="fr2 fr2--ta fr2--noi-dung fr-g-noi-dung">
-                          <label>Nội dung</label>
-                          <textarea class="fc" placeholder="Nhập"></textarea>
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="split-bar" aria-hidden="false">
+              <div
+                class="dh"
+                id="DH"
+                title="Kéo hoặc Ctrl + ↑/↓ để thay đổi chiều cao form"
+                tabindex="0"
+              >
+                <div class="tb-grip" aria-hidden="true"><i></i><i></i><i></i></div>
               </div>
             </div>
 
@@ -1608,29 +1859,10 @@
                   <div class="card" style="padding: 0; margin-bottom: 0">
                     <div class="tw">
                       <table class="dt" id="table1">
-                        <thead>
-                          <tr>
-                            <th style="width: 38px">STT</th>
-                            <th style="width: 100px" data-col="loaiNv">Loại NV</th>
-                            <th data-col="dienGiai">Diễn giải</th>
-                            <th style="width: 68px" data-col="tkNo">TK nợ</th>
-                            <th style="width: 68px" data-col="tkCo">TK có</th>
-                            <th style="width: 76px" data-col="tkNbNo">TK NB nợ</th>
-                            <th style="width: 76px" data-col="tkNbCo">TK NB có</th>
-                            <th style="width: 108px" data-col="soTien">Số tiền VNĐ</th>
-                            <th style="width: 76px" data-col="nguonNs">Nguồn NS</th>
-                            <th style="width: 96px" data-col="chuong">Chương</th>
-                            <th style="width: 88px">Thao tác</th>
-                          </tr>
-                        </thead>
+                        <colgroup id="table1-colgroup"></colgroup>
+                        <thead id="table1-thead"></thead>
                         <tbody id="tb1"></tbody>
-                        <tfoot>
-                          <tr>
-                            <td colspan="7" class="dt-total-label">Tổng</td>
-                            <td class="dt-total-amount" id="tb1-total">0</td>
-                            <td colspan="3"></td>
-                          </tr>
-                        </tfoot>
+                        <tfoot id="table1-tfoot"></tfoot>
                       </table>
                     </div>
                   </div>
@@ -1640,7 +1872,7 @@
                   <div
                     class="dh"
                     id="DH2"
-                    title="Kéo hoặc Ctrl + ↑/↓ để thay đổi chiều cao giữa 2 bảng"
+                    title="Kéo hoặc Ctrl + Shift + ↑/↓ để thay đổi chiều cao giữa 2 bảng"
                     tabindex="0"
                   >
                     <div class="tb-grip" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -1697,30 +1929,10 @@
                   <div class="card" style="padding: 0">
                     <div class="tw">
                       <table class="dt" id="table2">
-                        <thead>
-                          <tr>
-                            <th style="width: 38px">STT</th>
-                            <th style="width: 100px" data-col="loaiNv">Loại NV</th>
-                            <th data-col="dienGiai">Diễn giải</th>
-                            <th style="width: 76px" data-col="tkNbNo">TK NB nợ</th>
-                            <th style="width: 76px" data-col="tkNbCo">TK NB có</th>
-                            <th style="width: 108px" data-col="soTien">Số tiền VNĐ</th>
-                            <th style="width: 76px" data-col="nguonNs">Nguồn NS</th>
-                            <th style="width: 76px" data-col="chuong">Chương</th>
-                            <th style="width: 96px" data-col="loaiKhoan">Loại - Khoản</th>
-                            <th style="width: 76px" data-col="mucTm">Mục/TM</th>
-                            <th style="width: 58px" data-col="dtth">ĐTTH</th>
-                            <th style="width: 88px">Thao tác</th>
-                          </tr>
-                        </thead>
+                        <colgroup id="table2-colgroup"></colgroup>
+                        <thead id="table2-thead"></thead>
                         <tbody id="tb2"></tbody>
-                        <tfoot>
-                          <tr>
-                            <td colspan="5" class="dt-total-label">Tổng</td>
-                            <td class="dt-total-amount" id="tb2-total">0</td>
-                            <td colspan="6"></td>
-                          </tr>
-                        </tfoot>
+                        <tfoot id="table2-tfoot"></tfoot>
                       </table>
                     </div>
                   </div>
@@ -1749,6 +1961,12 @@
           soTien: '1500000000',
           nguonNs: '01',
           chuong: '601',
+          loaiKhoan: '01 - 01',
+          muc: '01',
+          tieuMuc: '001',
+          capPhat: '001',
+          duAn: 'DA-2026-01',
+          dtth: 'DT01',
         },
         {
           loaiNv: 'NV 02',
@@ -1760,6 +1978,12 @@
           soTien: '850000000',
           nguonNs: '02',
           chuong: '602',
+          loaiKhoan: '02 - 03',
+          muc: '02',
+          tieuMuc: '002',
+          capPhat: '002',
+          duAn: 'DA-2026-02',
+          dtth: 'DT02',
         },
         {
           loaiNv: 'NV 01',
@@ -1771,6 +1995,12 @@
           soTien: '3200000000',
           nguonNs: '01',
           chuong: '601',
+          loaiKhoan: '01 - 01',
+          muc: '01',
+          tieuMuc: '001',
+          capPhat: '001',
+          duAn: 'DA-2026-01',
+          dtth: 'DT01',
         },
         {
           loaiNv: 'NV 03',
@@ -1782,6 +2012,12 @@
           soTien: '5000000000',
           nguonNs: '03',
           chuong: '605',
+          loaiKhoan: '03 - 05',
+          muc: '03',
+          tieuMuc: '003',
+          capPhat: '003',
+          duAn: 'DA-2026-03',
+          dtth: 'DT03',
         },
       ];
 
@@ -1874,52 +2110,453 @@
       </div>`;
       }
 
-      function renderTb1Row(row, stt) {
-        return `<tr data-row-index="${stt - 1}">
-      <td style="text-align:center;color:var(--acc-text-muted)">${stt}</td>
-      <td data-col="loaiNv"><select class="tds"><option></option><option selected>${esc(row.loaiNv)}</option></select></td>
-      <td data-col="dienGiai"><input class="tdi" value="${esc(row.dienGiai)}" /></td>
-      <td data-col="tkNo"><input class="tdi" value="${esc(row.tkNo)}" /></td>
-      <td data-col="tkCo"><input class="tdi" value="${esc(row.tkCo)}" /></td>
-      <td data-col="tkNbNo"><input class="tdi" value="${esc(row.tkNbNo)}" /></td>
-      <td data-col="tkNbCo"><input class="tdi" value="${esc(row.tkNbCo)}" /></td>
-      <td data-col="soTien"><input class="tdi" style="text-align:right" value="${esc(fmtVnd(row.soTien))}" /></td>
-      <td data-col="nguonNs"><input class="tdi" value="${esc(row.nguonNs)}" /></td>
-      <td data-col="chuong"><input class="tdi" value="${esc(row.chuong)}" /></td>
-      <td>${renderActionButtons()}</td>
-    </tr>`;
+      const ICON_TH_MENU =
+        '<svg width="4" height="14" viewBox="0 0 4 14" fill="none" aria-hidden="true"><circle cx="2" cy="2" r="1.5" fill="currentColor"/><circle cx="2" cy="7" r="1.5" fill="currentColor"/><circle cx="2" cy="12" r="1.5" fill="currentColor"/></svg>';
+
+      const TB1_COL_WIDTHS = {
+        stt: 'var(--col-stt)',
+        loaiNv: 'var(--col-loaiNv)',
+        dienGiai: 'var(--col-dienGiai)',
+        tkNo: 'var(--col-tkNo)',
+        tkCo: 'var(--col-tkCo)',
+        tkNbNo: 'var(--col-tkNbNo)',
+        tkNbCo: 'var(--col-tkNbCo)',
+        soTien: 'var(--col-soTien)',
+        nguonNs: 'var(--col-nguonNs)',
+        chuong: 'var(--col-chuong)',
+        loaiKhoan: 'var(--col-loaiKhoan)',
+        muc: 'var(--col-muc)',
+        tieuMuc: 'var(--col-tieuMuc)',
+        capPhat: 'var(--col-capPhat)',
+        duAn: 'var(--col-duAn)',
+        dtth: 'var(--col-dtth)',
+        thaoTac: 'var(--col-thaoTac)',
+      };
+      const TB2_COL_WIDTHS = {
+        stt: 'var(--col-stt)',
+        loaiNv: 'var(--col-loaiNv)',
+        dienGiai: 'var(--col-dienGiai)',
+        tkNbNo: 'var(--col-tkNbNo)',
+        tkNbCo: 'var(--col-tkNbCo)',
+        soTien: 'var(--col-soTien)',
+        nguonNs: 'var(--col-nguonNs)',
+        chuong: 'var(--col-chuong)',
+        loaiKhoan: 'var(--col-loaiKhoan)',
+        mucTm: 'var(--col-mucTm)',
+        dtth: 'var(--col-dtth)',
+        thaoTac: 'var(--col-thaoTac)',
+      };
+
+      function renderTb1Cell(key, row) {
+        if (key === 'loaiNv') {
+          return `<select class="tds"><option></option><option selected>${esc(row.loaiNv)}</option></select>`;
+        }
+        if (key === 'soTien') {
+          return `<input class="tdi" style="text-align:right" value="${esc(fmtVnd(row.soTien))}" />`;
+        }
+        if (key === 'thaoTac') {
+          return renderActionButtons();
+        }
+        return `<input class="tdi" value="${esc(row[key] ?? '')}" />`;
       }
 
-      function renderTb2Row(row, stt) {
-        return `<tr data-row-index="${stt - 1}">
-    <td style="text-align:center;color:var(--acc-text-muted)">${stt}</td>
-    <td data-col="loaiNv"><select class="tds"><option></option><option selected>${esc(row.loaiNv)}</option></select></td>
-    <td data-col="dienGiai"><input class="tdi" value="${esc(row.dienGiai)}" /></td>
-    <td data-col="tkNbNo"><input class="tdi" value="${esc(row.tkNbNo)}" /></td>
-    <td data-col="tkNbCo"><input class="tdi" value="${esc(row.tkNbCo)}" /></td>
-    <td data-col="soTien"><input class="tdi" style="text-align:right" value="${esc(fmtVnd(row.soTien))}" /></td>
-    <td data-col="nguonNs"><input class="tdi" value="${esc(row.nguonNs)}" /></td>
-    <td data-col="chuong"><input class="tdi" value="${esc(row.chuong)}" /></td>
-    <td data-col="loaiKhoan"><input class="tdi" value="${esc(row.loaiKhoan)}" /></td>
-    <td data-col="mucTm"><input class="tdi" value="${esc(row.mucTm)}" /></td>
-    <td data-col="dtth"><input class="tdi" value="${esc(row.dtth)}" /></td>
-    <td data-col="thaoTac">${renderActionButtons()}</td>
-  </tr>`;
+      function renderTb2Cell(key, row) {
+        if (key === 'loaiNv') {
+          return `<select class="tds"><option></option><option selected>${esc(row.loaiNv)}</option></select>`;
+        }
+        if (key === 'soTien') {
+          return `<input class="tdi" style="text-align:right" value="${esc(fmtVnd(row.soTien))}" />`;
+        }
+        if (key === 'thaoTac') {
+          return renderActionButtons();
+        }
+        return `<input class="tdi" value="${esc(row[key] ?? '')}" />`;
       }
 
-      function initTableRows({ tbody, data, renderRow, totalEl, onRendered }) {
-        function render() {
-          tbody.innerHTML = data.map((row, i) => renderRow(row, i + 1)).join('');
-          totalEl.textContent = fmtVnd(sumSoTien(data));
-          onRendered?.();
+      function compareColumnValues(a, b, key) {
+        if (key === 'soTien') {
+          return Number(a || 0) - Number(b || 0);
+        }
+        return String(a ?? '').localeCompare(String(b ?? ''), 'vi', {
+          numeric: true,
+          sensitivity: 'base',
+        });
+      }
+
+      let openHeaderMenu = null;
+
+      function closeHeaderMenus(exceptWrap) {
+        document.querySelectorAll('.th-menu-dropdown').forEach((menu) => {
+          if (exceptWrap && exceptWrap.contains(menu)) return;
+          menu.hidden = true;
+          menu.closest('.th-menu-wrap')?.querySelector('.th-menu-btn')?.classList.remove('is-open');
+        });
+        if (!exceptWrap) openHeaderMenu = null;
+      }
+
+      const ACTION_COL_KEY = 'thaoTac';
+      const TABLE_CONFIG_STORAGE_KEY = 'table-config';
+
+      function readTableConfigStore() {
+        try {
+          return JSON.parse(localStorage.getItem(TABLE_CONFIG_STORAGE_KEY) || '{}');
+        } catch (_) {
+          return {};
+        }
+      }
+
+      function writeTableConfigStore(store) {
+        try {
+          localStorage.setItem(TABLE_CONFIG_STORAGE_KEY, JSON.stringify(store));
+        } catch (_) {}
+      }
+
+      function renderHeaderMenu(key, isPinned) {
+        if (key === ACTION_COL_KEY) return '';
+        const pinAction = isPinned
+          ? `<button type="button" data-menu-action="unpin" data-col-key="${key}">Bỏ ghim cột</button>`
+          : `<button type="button" data-menu-action="pin" data-col-key="${key}">Ghim cột</button>`;
+        return `<div class="th-menu-wrap">
+          <button type="button" class="th-menu-btn" data-col-key="${key}" aria-label="Tùy chọn cột" aria-haspopup="true" aria-expanded="false">${ICON_TH_MENU}</button>
+          <div class="th-menu-dropdown" hidden>
+            ${pinAction}
+            <button type="button" data-menu-action="sort" data-col-key="${key}">Sắp xếp</button>
+          </div>
+        </div>`;
+      }
+
+      function initDataTable({
+        configId,
+        tableEl,
+        colgroupEl,
+        theadEl,
+        tbodyEl,
+        tfootEl,
+        columns,
+        colWidths,
+        data,
+        renderCell,
+        totalElId,
+      }) {
+        const totalElIdResolved = totalElId;
+        const columnByKey = Object.fromEntries(columns.map((c) => [c.key, c]));
+        const defaultDataColumnKeys = () =>
+          columns.map((c) => c.key).filter((k) => k !== ACTION_COL_KEY);
+        let pinnedKeys = [];
+        let unpinnedOrder = defaultDataColumnKeys();
+        let columnOrder = [];
+        let sortState = { key: null, dir: 'asc' };
+        const colVisibility = Object.fromEntries(columns.map((c) => [c.key, true]));
+
+        function persistTableConfig() {
+          if (!configId) return;
+          const store = readTableConfigStore();
+          store[configId] = {
+            sticky: pinnedKeys.filter((k) => k !== ACTION_COL_KEY),
+            sort: sortState.key ? `${sortState.key}:${sortState.dir}` : '',
+          };
+          writeTableConfigStore(store);
         }
 
-        tbody.addEventListener('click', (e) => {
+        function applyTableConfigFromStorage() {
+          if (!configId) return;
+          const saved = readTableConfigStore()[configId];
+          if (!saved) return;
+
+          const validKeys = new Set(columns.map((c) => c.key));
+          pinnedKeys = (Array.isArray(saved.sticky) ? saved.sticky : []).filter(
+            (k) => validKeys.has(k) && k !== ACTION_COL_KEY,
+          );
+          unpinnedOrder = defaultDataColumnKeys().filter((k) => !pinnedKeys.includes(k));
+
+          if (saved.sort && typeof saved.sort === 'string') {
+            const colonAt = saved.sort.lastIndexOf(':');
+            if (colonAt > 0) {
+              const key = saved.sort.slice(0, colonAt);
+              const dir = saved.sort.slice(colonAt + 1);
+              if (
+                validKeys.has(key) &&
+                key !== ACTION_COL_KEY &&
+                (dir === 'asc' || dir === 'desc')
+              ) {
+                sortState = { key, dir };
+                const mult = dir === 'asc' ? 1 : -1;
+                data.sort((a, b) => compareColumnValues(a[key], b[key], key) * mult);
+              }
+            }
+          }
+        }
+
+        function hasActionCol() {
+          return !!columnByKey[ACTION_COL_KEY];
+        }
+
+        function rebuildColumnOrder() {
+          pinnedKeys = pinnedKeys.filter((k) => k !== ACTION_COL_KEY);
+          unpinnedOrder = unpinnedOrder.filter((k) => k !== ACTION_COL_KEY);
+          columnOrder = [...pinnedKeys, ...unpinnedOrder];
+          if (hasActionCol() && colVisibility[ACTION_COL_KEY]) {
+            columnOrder.push(ACTION_COL_KEY);
+          }
+        }
+
+        rebuildColumnOrder();
+        applyTableConfigFromStorage();
+        rebuildColumnOrder();
+
+        function isPinned(key) {
+          if (key === ACTION_COL_KEY) return true;
+          return pinnedKeys.includes(key);
+        }
+
+        function getVisibleColumnKeys() {
+          return columnOrder.filter((key) => colVisibility[key]);
+        }
+
+        function getColWidthPx(key) {
+          const varRef = colWidths[key === 'stt' ? 'stt' : key];
+          if (!varRef) return 0;
+          const match = String(varRef).match(/var\((--[^)]+)\)/);
+          if (!match) return 0;
+          return parseFloat(getComputedStyle(tableEl).getPropertyValue(match[1])) || 0;
+        }
+
+        function applyPinnedLayout() {
+          const keys = getVisibleColumnKeys();
+          const pinnedVisible = keys.filter((key) => pinnedKeys.includes(key));
+
+          tableEl.querySelectorAll('.dt-col-stt').forEach((el) => {
+            el.classList.add('dt-col-pinned');
+            el.style.left = '0px';
+          });
+
+          let left = getColWidthPx('stt');
+          let lastPinnedKey = null;
+
+          pinnedVisible.forEach((key) => {
+            lastPinnedKey = key;
+            tableEl
+              .querySelectorAll(
+                `thead [data-col="${key}"], tbody [data-col="${key}"], tfoot [data-col="${key}"]`,
+              )
+              .forEach((el) => {
+                el.classList.add('dt-col-pinned');
+                el.classList.remove('dt-col-pinned-edge');
+                el.style.left = `${left}px`;
+              });
+            left += getColWidthPx(key);
+          });
+
+          tableEl.querySelectorAll('.dt-col-pinned-edge').forEach((el) => {
+            el.classList.remove('dt-col-pinned-edge');
+          });
+
+          const edgeTarget = lastPinnedKey
+            ? tableEl.querySelectorAll(`[data-col="${lastPinnedKey}"].dt-col-pinned`)
+            : tableEl.querySelectorAll('.dt-col-stt');
+          edgeTarget.forEach((el) => el.classList.add('dt-col-pinned-edge'));
+
+          keys
+            .filter((key) => !pinnedKeys.includes(key) && key !== ACTION_COL_KEY)
+            .forEach((key) => {
+              tableEl.querySelectorAll(`[data-col="${key}"]`).forEach((el) => {
+                el.classList.remove('dt-col-pinned', 'dt-col-pinned-edge');
+                el.style.left = '';
+              });
+            });
+
+          tableEl.querySelectorAll('.dt-col-pinned-right-edge').forEach((el) => {
+            el.classList.remove('dt-col-pinned-right-edge');
+          });
+          tableEl.querySelectorAll(`[data-col="${ACTION_COL_KEY}"]`).forEach((el) => {
+            el.classList.remove('dt-col-pinned', 'dt-col-pinned-edge');
+            el.classList.add('dt-col-pinned-right', 'dt-col-pinned-right-edge');
+            el.style.right = '0px';
+            el.style.left = '';
+          });
+
+          const labelCell = tfootEl.querySelector('.dt-total-label');
+          if (labelCell) {
+            const dataKeys = keys.filter((k) => k !== ACTION_COL_KEY);
+            const soTienIndex = dataKeys.indexOf('soTien');
+            if (soTienIndex >= 0) {
+              let labelWidth = getColWidthPx('stt');
+              for (let i = 0; i < soTienIndex; i++) {
+                labelWidth += getColWidthPx(dataKeys[i]);
+              }
+              labelCell.style.minWidth = `${labelWidth}px`;
+              labelCell.style.width = `${labelWidth}px`;
+              labelCell.style.maxWidth = `${labelWidth}px`;
+            }
+          }
+        }
+
+        function syncAllRowsFromDom() {
+          tbodyEl.querySelectorAll('tr').forEach((tr) => {
+            const index = Number(tr.dataset.rowIndex);
+            if (!Number.isNaN(index) && data[index]) {
+              syncRowFromTr(tr, data[index]);
+            }
+          });
+        }
+
+        function pinColumn(key) {
+          if (!columnByKey[key] || key === ACTION_COL_KEY) return;
+          unpinnedOrder = unpinnedOrder.filter((k) => k !== key);
+          pinnedKeys = [key, ...pinnedKeys.filter((k) => k !== key)];
+          rebuildColumnOrder();
+          renderTable();
+          persistTableConfig();
+        }
+
+        function unpinColumn(key) {
+          if (!pinnedKeys.includes(key) || key === ACTION_COL_KEY) return;
+          pinnedKeys = pinnedKeys.filter((k) => k !== key);
+          unpinnedOrder = unpinnedOrder.filter((k) => k !== key);
+          // Đặt ngay sau khối cột ghim (đầu vùng scroll)
+          unpinnedOrder = [key, ...unpinnedOrder];
+          rebuildColumnOrder();
+          renderTable();
+          persistTableConfig();
+        }
+
+        function sortByColumn(key) {
+          if (!columnByKey[key] || key === 'thaoTac') return;
+          syncAllRowsFromDom();
+          if (sortState.key === key) {
+            sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
+          } else {
+            sortState = { key, dir: 'asc' };
+          }
+          const dir = sortState.dir === 'asc' ? 1 : -1;
+          data.sort((a, b) => compareColumnValues(a[key], b[key], key) * dir);
+          renderBody();
+          renderHead();
+          applyPinnedLayout();
+          persistTableConfig();
+        }
+
+        function renderColgroup() {
+          const keys = getVisibleColumnKeys();
+          colgroupEl.innerHTML =
+            `<col style="width:${colWidths.stt}" />` +
+            keys.map((key) => `<col style="width:${colWidths[key]}" />`).join('');
+        }
+
+        function renderHead() {
+          const keys = getVisibleColumnKeys();
+          const headerCells = keys
+            .map((key) => {
+              const col = columnByKey[key];
+              const pinnedClass = isPinned(key) ? ' is-pinned-col' : '';
+              const sortClass =
+                sortState.key === key
+                  ? sortState.dir === 'asc'
+                    ? ' is-sorted-asc'
+                    : ' is-sorted-desc'
+                  : '';
+              return `<th data-col="${key}" class="${sortClass}${pinnedClass}">
+              <div class="th-head">
+                <span class="th-label">${esc(col.label)}</span>
+                ${renderHeaderMenu(key, isPinned(key))}
+              </div>
+            </th>`;
+            })
+            .join('');
+          theadEl.innerHTML = `<tr><th class="dt-col-stt">STT</th>${headerCells}</tr>`;
+        }
+
+        function updateTotalDisplay() {
+          const el = document.getElementById(totalElIdResolved);
+          if (el) el.textContent = fmtVnd(sumSoTien(data));
+        }
+
+        function renderBody() {
+          const keys = getVisibleColumnKeys();
+          tbodyEl.innerHTML = data
+            .map(
+              (row, i) =>
+                `<tr data-row-index="${i}">
+              <td class="dt-col-stt" style="text-align:center;color:var(--acc-text-muted)">${i + 1}</td>
+              ${keys
+                .map(
+                  (key) =>
+                    `<td data-col="${key}"${key === 'soTien' ? ' style="text-align:right"' : ''}>${renderCell(key, row)}</td>`,
+                )
+                .join('')}
+            </tr>`,
+            )
+            .join('');
+          updateTotalDisplay();
+        }
+
+        function renderFoot() {
+          const keys = getVisibleColumnKeys();
+          const dataKeys = keys.filter((k) => k !== ACTION_COL_KEY);
+          const soTienIndex = dataKeys.indexOf('soTien');
+          if (soTienIndex < 0) {
+            tfootEl.innerHTML = '';
+            return;
+          }
+          const labelColspan = 1 + soTienIndex;
+          const middleCount = dataKeys.length - soTienIndex - 1;
+          const hasAction = keys.includes(ACTION_COL_KEY);
+          const totalText = fmtVnd(sumSoTien(data));
+          tfootEl.innerHTML = `<tr>
+            <td colspan="${labelColspan}" class="dt-total-label">Tổng</td>
+            <td class="dt-total-amount" data-col="soTien" id="${totalElIdResolved}">${totalText}</td>
+            ${middleCount > 0 ? `<td colspan="${middleCount}"></td>` : ''}
+            ${hasAction ? `<td data-col="${ACTION_COL_KEY}"></td>` : ''}
+          </tr>`;
+        }
+
+        function renderTable() {
+          renderColgroup();
+          renderHead();
+          renderBody();
+          renderFoot();
+          applyPinnedLayout();
+        }
+
+        function applyColumnVisibility() {
+          renderTable();
+        }
+
+        theadEl.addEventListener('click', (e) => {
+          const menuBtn = e.target.closest('.th-menu-btn');
+          if (menuBtn) {
+            e.stopPropagation();
+            const wrap = menuBtn.closest('.th-menu-wrap');
+            const menu = wrap?.querySelector('.th-menu-dropdown');
+            if (!menu) return;
+            const willOpen = menu.hidden;
+            closeHeaderMenus();
+            if (willOpen) {
+              menu.hidden = false;
+              menuBtn.classList.add('is-open');
+              menuBtn.setAttribute('aria-expanded', 'true');
+              openHeaderMenu = wrap;
+            }
+            return;
+          }
+
+          const actionBtn = e.target.closest('[data-menu-action]');
+          if (!actionBtn) return;
+          e.stopPropagation();
+          const key = actionBtn.dataset.colKey;
+          const action = actionBtn.dataset.menuAction;
+          closeHeaderMenus();
+          if (action === 'pin') pinColumn(key);
+          else if (action === 'unpin') unpinColumn(key);
+          else if (action === 'sort') sortByColumn(key);
+        });
+
+        tbodyEl.addEventListener('click', (e) => {
           const btn = e.target.closest('[data-action]');
           if (!btn) return;
 
           const tr = btn.closest('tr');
-          if (!tr || !tbody.contains(tr)) return;
+          if (!tr || !tbodyEl.contains(tr)) return;
 
           const index = Number(tr.dataset.rowIndex);
           if (Number.isNaN(index) || index < 0 || index >= data.length) return;
@@ -1935,11 +2572,29 @@
             return;
           }
 
-          render();
+          renderBody();
+          renderFoot();
+          applyPinnedLayout();
         });
 
-        render();
-        return { render };
+        renderTable();
+
+        return {
+          applyColumnVisibility,
+          getColVisibility: () => colVisibility,
+          setColVisibility(key, visible) {
+            colVisibility[key] = visible;
+          },
+          resetColVisibility() {
+            columns.forEach(({ key }) => {
+              colVisibility[key] = true;
+            });
+          },
+          renderTable,
+          containsHeaderMenu(target) {
+            return !!target?.closest?.('.th-menu-wrap');
+          },
+        };
       }
 
       // Table 1 — Hạch toán
@@ -1966,21 +2621,28 @@
 
       // Toolbar: ẩn hiện cột
       const TB1_COLUMNS = [
-        { key: 'loaiNv', label: 'Loại NV', required: false },
-        { key: 'dienGiai', label: 'Diễn giải', required: false },
-        { key: 'tkNo', label: 'TK nợ', required: false },
-        { key: 'tkCo', label: 'TK có', required: false },
-        { key: 'tkNbNo', label: 'TK NB nợ', required: false },
-        { key: 'tkNbCo', label: 'TK NB có', required: false },
+        { key: 'loaiNv', label: 'Loại NV', required: true },
+        { key: 'dienGiai', label: 'Diễn giải', required: true },
+        { key: 'tkNo', label: 'TK nợ', required: true },
+        { key: 'tkCo', label: 'TK có', required: true },
+        { key: 'tkNbNo', label: 'TK NB nợ', required: true },
+        { key: 'tkNbCo', label: 'TK NB có', required: true },
         { key: 'soTien', label: 'Số tiền VNĐ', required: true },
         { key: 'nguonNs', label: 'Nguồn NS', required: false },
         { key: 'chuong', label: 'Chương', required: false },
+        { key: 'loaiKhoan', label: 'Loại - Khoản', required: false },
+        { key: 'muc', label: 'Mục', required: false },
+        { key: 'tieuMuc', label: 'Tiểu mục', required: false },
+        { key: 'capPhat', label: 'Cấp phát', required: false },
+        { key: 'duAn', label: 'Dự án', required: false },
+        { key: 'dtth', label: 'ĐTTH', required: false },
+        { key: 'thaoTac', label: 'Thao tác', required: true },
       ];
       const TB2_COLUMNS = [
-        { key: 'loaiNv', label: 'Loại NV', required: false },
-        { key: 'dienGiai', label: 'Diễn giải', required: false },
-        { key: 'tkNbNo', label: 'TK NB nợ', required: false },
-        { key: 'tkNbCo', label: 'TK NB có', required: false },
+        { key: 'loaiNv', label: 'Loại NV', required: true },
+        { key: 'dienGiai', label: 'Diễn giải', required: true },
+        { key: 'tkNbNo', label: 'TK NB nợ', required: true },
+        { key: 'tkNbCo', label: 'TK NB có', required: true },
         { key: 'soTien', label: 'Số tiền VNĐ', required: true },
         { key: 'nguonNs', label: 'Nguồn NS', required: false },
         { key: 'chuong', label: 'Chương', required: false },
@@ -1991,7 +2653,7 @@
       ];
 
       function initColumnToggle({
-        tableEl,
+        tableApi,
         columns,
         btnToggle,
         dropdown,
@@ -1999,23 +2661,17 @@
         btnClose,
         btnReset,
       }) {
-        const colVisibility = Object.fromEntries(columns.map((c) => [c.key, true]));
-
         function applyColumnVisibility() {
-          columns.forEach(({ key }) => {
-            const visible = colVisibility[key];
-            tableEl.querySelectorAll(`[data-col="${key}"]`).forEach((el) => {
-              el.classList.toggle('is-hidden', !visible);
-            });
-          });
+          tableApi.applyColumnVisibility();
         }
 
         function renderColumnDropdown() {
+          const vis = tableApi.getColVisibility();
           dropdownBody.innerHTML = columns
             .map(
               ({ key, label, required }) => `
           <label class="col-dropdown-item${required ? ' is-disabled' : ''}">
-            <input type="checkbox" data-col-key="${key}" ${colVisibility[key] ? 'checked' : ''} ${required ? 'disabled' : ''} />
+            <input type="checkbox" data-col-key="${key}" ${vis[key] ? 'checked' : ''} ${required ? 'disabled' : ''} />
             <span>${esc(label)}</span>
           </label>`,
             )
@@ -2034,16 +2690,14 @@
         });
         btnClose.addEventListener('click', () => setOpen(false));
         btnReset.addEventListener('click', () => {
-          columns.forEach(({ key }) => {
-            colVisibility[key] = true;
-          });
+          tableApi.resetColVisibility();
           renderColumnDropdown();
           applyColumnVisibility();
         });
         dropdownBody.addEventListener('change', (e) => {
           const key = e.target.dataset.colKey;
           if (!key) return;
-          colVisibility[key] = e.target.checked;
+          tableApi.setColVisibility(key, e.target.checked);
           applyColumnVisibility();
         });
 
@@ -2058,8 +2712,35 @@
         };
       }
 
-      const table1Toggle = initColumnToggle({
+      const table1Api = initDataTable({
+        configId: 'hach-toan',
         tableEl: document.getElementById('table1'),
+        colgroupEl: document.getElementById('table1-colgroup'),
+        theadEl: document.getElementById('table1-thead'),
+        tbodyEl: tb1,
+        tfootEl: document.getElementById('table1-tfoot'),
+        columns: TB1_COLUMNS,
+        colWidths: TB1_COL_WIDTHS,
+        data: tb1Data,
+        renderCell: renderTb1Cell,
+        totalElId: 'tb1-total',
+      });
+      const table2Api = initDataTable({
+        configId: 'hach-toan-dong-thoi',
+        tableEl: document.getElementById('table2'),
+        colgroupEl: document.getElementById('table2-colgroup'),
+        theadEl: document.getElementById('table2-thead'),
+        tbodyEl: tb2,
+        tfootEl: document.getElementById('table2-tfoot'),
+        columns: TB2_COLUMNS,
+        colWidths: TB2_COL_WIDTHS,
+        data: tb2Data,
+        renderCell: renderTb2Cell,
+        totalElId: 'tb2-total',
+      });
+
+      const table1Toggle = initColumnToggle({
+        tableApi: table1Api,
         columns: TB1_COLUMNS,
         btnToggle: document.getElementById('btnColToggle'),
         dropdown: document.getElementById('colDropdown'),
@@ -2068,7 +2749,7 @@
         btnReset: document.getElementById('colDropdownReset'),
       });
       const table2Toggle = initColumnToggle({
-        tableEl: document.getElementById('table2'),
+        tableApi: table2Api,
         columns: TB2_COLUMNS,
         btnToggle: document.getElementById('btnColToggle2'),
         dropdown: document.getElementById('colDropdown2'),
@@ -2078,22 +2759,10 @@
       });
       const columnToggles = [table1Toggle, table2Toggle];
 
-      initTableRows({
-        tbody: tb1,
-        data: tb1Data,
-        renderRow: renderTb1Row,
-        totalEl: document.getElementById('tb1-total'),
-        onRendered: () => table1Toggle.applyColumnVisibility(),
-      });
-      initTableRows({
-        tbody: tb2,
-        data: tb2Data,
-        renderRow: renderTb2Row,
-        totalEl: document.getElementById('tb2-total'),
-        onRendered: () => table2Toggle.applyColumnVisibility(),
-      });
-
       document.addEventListener('click', (e) => {
+        if (!e.target.closest('.th-menu-wrap')) {
+          closeHeaderMenus();
+        }
         columnToggles.forEach((toggle) => {
           if (!toggle.containsTarget(e.target)) {
             toggle.close();
@@ -2110,6 +2779,7 @@
         minBottom,
         reserveHeight = 0,
         initialRatio = 0.5,
+        initialHeight = null,
       }) {
         let drag = false;
         let sy = 0;
@@ -2158,15 +2828,7 @@
           document.body.style.userSelect = '';
         }
 
-        function applyInitialHeight() {
-          const splitBarH = handleEl?.closest('.split-bar')?.offsetHeight || 0;
-          const available = Math.max(0, container.offsetHeight - splitBarH);
-          setTopHeight(available * initialRatio);
-        }
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(applyInitialHeight);
-        });
+        setTopHeight(initialHeight ?? container.offsetHeight * initialRatio);
 
         handleEl.addEventListener('mousedown', (e) => {
           e.preventDefault();
@@ -2203,19 +2865,30 @@
         return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
       }
 
+      const ST = document.getElementById('ST');
+      const DH = document.getElementById('DH');
+      const SPC = document.querySelector('.spc');
       const TB_TOP = document.getElementById('TB_TOP');
       const DH2 = document.getElementById('DH2');
       const TABLES_SPLIT = document.getElementById('TABLES_SPLIT');
       const KEY_STEP = 16;
-      const TABLES_TOP_RATIO = 0.53;
+
+      const formSplit = initVerticalSplit({
+        container: SPC,
+        topEl: ST,
+        handleEl: DH,
+        minTop: 80,
+        minBottom: 80,
+        initialHeight: 120,
+      });
 
       const tablesSplit = initVerticalSplit({
         container: TABLES_SPLIT,
         topEl: TB_TOP,
         handleEl: DH2,
-        minTop: 120,
-        minBottom: 120,
-        initialRatio: TABLES_TOP_RATIO,
+        minTop: 100,
+        minBottom: 100,
+        initialRatio: 0.48,
       });
 
       document.addEventListener('keydown', (e) => {
@@ -2224,8 +2897,13 @@
 
         e.preventDefault();
         const delta = e.key === 'ArrowDown' ? KEY_STEP : -KEY_STEP;
-        tablesSplit.resizeTopByDelta(delta);
-        tablesSplit.flashHandle();
+        if (e.shiftKey) {
+          tablesSplit.resizeTopByDelta(delta);
+          tablesSplit.flashHandle();
+          return;
+        }
+        formSplit.resizeTopByDelta(delta);
+        formSplit.flashHandle();
       });
 
       // Sidebar collapse
