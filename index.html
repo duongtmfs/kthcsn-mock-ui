@@ -538,7 +538,6 @@
       }
       /* FORM */
       .fsplit {
-        --form-label-w: 128px;
         display: grid;
         grid-template-columns: minmax(0, 1fr) 290px;
         gap: 10px;
@@ -555,29 +554,32 @@
       .fl {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
       }
       .fr {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
       }
       .fr2 {
         display: grid;
-        grid-template-columns: var(--form-label-w) minmax(0, 1fr);
-        align-items: center;
-        gap: 8px;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+        gap: 4px;
         min-width: 0;
       }
       .fr2 label {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 4px;
         font-size: 12px;
         color: var(--acc-text-secondary);
-        white-space: nowrap;
         min-width: 0;
-        flex-shrink: 0;
       }
       .req {
         color: var(--color-brand-600);
+        flex-shrink: 0;
       }
       .g2 {
         display: grid;
@@ -588,10 +590,7 @@
         min-width: 0;
       }
       .fr2.fr2--ta {
-        align-items: start;
-      }
-      .fr2.fr2--ta label {
-        padding-top: 5px;
+        align-items: stretch;
       }
       .fr2.cbs {
         display: flex;
@@ -602,6 +601,7 @@
         min-width: unset;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
         gap: 4px;
         cursor: pointer;
         color: var(--acc-text-secondary);
@@ -1420,7 +1420,6 @@
           padding: 10px;
         }
         .fsplit {
-          --form-label-w: 120px;
           grid-template-columns: 1fr;
           gap: 10px;
         }
@@ -1430,8 +1429,6 @@
           gap: 8px 12px;
         }
         .fr .fr2 {
-          grid-template-columns: 1fr;
-          align-items: stretch;
           gap: 4px;
         }
         .g2 {
@@ -1496,7 +1493,7 @@
           gap: 8px;
         }
         .fr .fr2 {
-          grid-template-columns: var(--form-label-w) minmax(0, 1fr);
+          gap: 4px;
         }
         .g2 {
           grid-template-columns: 1fr;
@@ -1676,7 +1673,7 @@
                       <div class="fl">
                         <div class="g2">
                           <div class="fr2">
-                            <label><span class="req">* </span>Loại chứng từ</label>
+                            <label>Loại chứng từ<span class="req">*</span></label>
                             <select class="fc">
                               <option value="">Chọn</option>
                             </select>
@@ -1723,11 +1720,11 @@
                       </div>
                       <div class="fr">
                         <div class="fr2">
-                          <label><span class="req">* </span>Số chứng từ</label>
+                          <label>Số chứng từ<span class="req">*</span></label>
                           <input class="fc" placeholder="Nhập" />
                         </div>
                         <div class="fr2">
-                          <label><span class="req">* </span>Ngày CT</label>
+                          <label>Ngày CT<span class="req">*</span></label>
                           <div class="fcd">
                             <svg
                               width="13"
@@ -1744,7 +1741,7 @@
                           </div>
                         </div>
                         <div class="fr2">
-                          <label><span class="req">* </span>Ngày HT</label>
+                          <label>Ngày HT<span class="req">*</span></label>
                           <div class="fcd">
                             <svg
                               width="13"
