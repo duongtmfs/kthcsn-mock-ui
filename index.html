@@ -396,10 +396,9 @@
         padding-top: 12px;
       }
       .st {
-        overflow-y: auto;
-        overflow-x: hidden;
         flex-shrink: 0;
-        min-height: 0;
+        height: auto;
+        overflow: visible;
       }
       .st.col {
         height: 0 !important;
@@ -543,21 +542,144 @@
       .fsplit {
         --form-label-w: 128px;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 290px;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 1.05fr);
         gap: 12px;
         align-items: start;
       }
       .fl {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-rows: auto auto;
+        gap: 8px 12px;
+        align-items: stretch;
+      }
+      .fl > .fr2 {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+        gap: 4px;
+        min-width: 0;
+      }
+      .fl > .fr2 > label {
+        text-align: left;
+        white-space: nowrap;
+      }
+      .fl > .fr2.fr2--ta > label {
+        padding-top: 0;
+      }
+      .fl-g-loai {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .fl-g-cbs {
+        grid-column: 2;
+        grid-row: 1;
+        justify-content: flex-end;
+      }
+      .fl-g-tkdv {
+        grid-column: 3 / 5;
+        grid-row: 1;
+      }
+      .fl-g-tkdt {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      .fl-g-tendt {
+        grid-column: 2;
+        grid-row: 2;
+      }
+      .fl-g-madt {
+        grid-column: 3;
+        grid-row: 2;
+      }
+      .fl-g-diachi {
+        grid-column: 4;
+        grid-row: 2;
+      }
+      .fl > .fr2.fr2--cbs {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 4px;
+      }
+      .fl > .fr2.fr2--cbs .cbs-inline {
+        flex: 1;
+        align-items: flex-end;
+        padding-bottom: 2px;
+      }
+      .cbs-inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .cbs-inline label {
+        min-width: unset;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        color: var(--acc-text-secondary);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .cbs-inline input {
+        accent-color: var(--color-brand-600);
+        cursor: pointer;
+      }
+      .fl textarea.fc {
+        min-height: 44px;
       }
       .fr {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        border-left: 1px solid var(--acc-border);
-        padding-left: 14px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows: auto auto;
+        gap: 8px 12px;
+        align-items: stretch;
+      }
+      .fr > .fr2 {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+        gap: 4px;
+        min-width: 0;
+      }
+      .fr > .fr2 > label {
+        text-align: left;
+        white-space: nowrap;
+      }
+      .fr-g-soc {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .fr-g-ngayct {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      .fr-g-ngayht {
+        grid-column: 3;
+        grid-row: 1;
+      }
+      .fr-g-noi-dung {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+      .fr > .fr2.fr2--ta > label {
+        padding-top: 0;
+      }
+      .fr > .fr2.fr2--noi-dung textarea.fc {
+        height: 44px;
+        min-height: 44px;
+        resize: vertical;
+      }
+      .fsplit .fr2 {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+        gap: 4px;
+      }
+      .fsplit .fr2 > label {
+        text-align: left;
+        white-space: nowrap;
+      }
+      .fsplit .fr2.fr2--ta > label {
+        padding-top: 0;
       }
       .fr2 {
         display: grid;
@@ -1050,6 +1172,9 @@
           align-items: stretch;
           gap: 4px;
         }
+        .fr .fr2 > label {
+          text-align: left;
+        }
         .g2 {
           gap: 8px 10px;
         }
@@ -1081,6 +1206,21 @@
         }
         .page-header-title {
           font-size: 14px;
+        }
+        .fl {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .fl-g-loai,
+        .fl-g-cbs,
+        .fl-g-tkdt,
+        .fl-g-tendt,
+        .fl-g-madt,
+        .fl-g-diachi {
+          grid-column: auto;
+          grid-row: auto;
+        }
+        .fl-g-tkdv {
+          grid-column: 1 / -1;
         }
       }
 
@@ -1114,12 +1254,20 @@
           padding-left: 0;
           border-top: 1px solid var(--acc-border);
           padding-top: 12px;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 8px 12px;
+        }
+        .fr-g-noi-dung {
+          grid-column: 1 / -1;
         }
         .fr .fr2 {
-          grid-template-columns: var(--form-label-w) minmax(0, 1fr);
+          grid-template-columns: 1fr;
+          align-items: stretch;
+          gap: 4px;
+        }
+        .fr .fr2 > label {
+          text-align: left;
         }
         .g2 {
           grid-template-columns: 1fr;
@@ -1295,59 +1443,52 @@
                   <div class="cb">
                     <div class="fsplit">
                       <div class="fl">
-                        <div class="g2">
-                          <div class="fr2">
-                            <label><span class="req">* </span>Loại chứng từ</label>
-                            <select class="fc">
-                              <option value="">Chọn</option>
-                            </select>
-                          </div>
-                          <div class="fr2 cbs">
+                        <div class="fr2 fr2--loai fl-g-loai">
+                          <label><span class="req">* </span>Loại chứng từ</label>
+                          <select class="fc">
+                            <option value="">Chọn</option>
+                          </select>
+                        </div>
+                        <div class="fr2 fr2--cbs fl-g-cbs">
+                          <label class="fl-cbs-hd" aria-hidden="true">&nbsp;</label>
+                          <div class="cbs-inline">
                             <label><input type="checkbox" /> Kỳ chính lý</label>
                             <label><input type="checkbox" /> Nộp thuế</label>
                           </div>
                         </div>
-                        <div class="g2">
-                          <div class="fr2">
-                            <label>Mã ĐT thanh toán</label>
-                            <select class="fc">
-                              <option value="">Chọn</option>
-                            </select>
-                          </div>
-                          <div class="fr2">
-                            <label>TK ĐT thanh toán</label>
-                            <select class="fc">
-                              <option value="">Chọn</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="g2">
-                          <div class="fr2">
-                            <label>Tên ĐT thanh toán</label>
-                            <input class="fc" placeholder="Nhập" />
-                          </div>
-                          <div class="fr2">
-                            <label>Địa chỉ ĐTTT</label>
-                            <input class="fc" placeholder="Nhập" />
-                          </div>
-                        </div>
-                        <div class="fr2">
+                        <div class="fr2 fl-g-tkdv">
                           <label>TK đơn vị</label>
                           <select class="fc">
                             <option>3713.1.1006789 - KBNN Khu vực I-PGD số 1</option>
                           </select>
                         </div>
-                        <div class="fr2 fr2--ta">
-                          <label>Nội dung</label>
-                          <textarea class="fc" placeholder="Nhập"></textarea>
+                        <div class="fr2 fl-g-tkdt">
+                          <label>TK ĐT thanh toán</label>
+                          <select class="fc">
+                            <option value="">Chọn</option>
+                          </select>
+                        </div>
+                        <div class="fr2 fl-g-tendt">
+                          <label>Tên ĐT thanh toán</label>
+                          <input class="fc" placeholder="Nhập" />
+                        </div>
+                        <div class="fr2 fl-g-madt">
+                          <label>Mã ĐT thanh toán</label>
+                          <select class="fc">
+                            <option value="">Chọn</option>
+                          </select>
+                        </div>
+                        <div class="fr2 fl-g-diachi">
+                          <label>Địa chỉ ĐTTT</label>
+                          <input class="fc" placeholder="Nhập" />
                         </div>
                       </div>
                       <div class="fr">
-                        <div class="fr2">
+                        <div class="fr2 fr-g-soc">
                           <label><span class="req">* </span>Số chứng từ</label>
                           <input class="fc" placeholder="Nhập" />
                         </div>
-                        <div class="fr2">
+                        <div class="fr2 fr-g-ngayct">
                           <label><span class="req">* </span>Ngày CT</label>
                           <div class="fcd">
                             <svg
@@ -1364,7 +1505,7 @@
                             18/06/2026
                           </div>
                         </div>
-                        <div class="fr2">
+                        <div class="fr2 fr-g-ngayht">
                           <label><span class="req">* </span>Ngày HT</label>
                           <div class="fcd">
                             <svg
@@ -1381,21 +1522,14 @@
                             18/06/2026
                           </div>
                         </div>
+                        <div class="fr2 fr2--ta fr2--noi-dung fr-g-noi-dung">
+                          <label>Nội dung</label>
+                          <textarea class="fc" placeholder="Nhập"></textarea>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="split-bar" aria-hidden="false">
-              <div
-                class="dh"
-                id="DH"
-                title="Kéo hoặc Ctrl + ↑/↓ để thay đổi chiều cao form"
-                tabindex="0"
-              >
-                <div class="tb-grip" aria-hidden="true"><i></i><i></i><i></i></div>
               </div>
             </div>
 
@@ -1506,7 +1640,7 @@
                   <div
                     class="dh"
                     id="DH2"
-                    title="Kéo hoặc Ctrl + Shift + ↑/↓ để thay đổi chiều cao giữa 2 bảng"
+                    title="Kéo hoặc Ctrl + ↑/↓ để thay đổi chiều cao giữa 2 bảng"
                     tabindex="0"
                   >
                     <div class="tb-grip" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -2024,7 +2158,15 @@
           document.body.style.userSelect = '';
         }
 
-        setTopHeight(container.offsetHeight * initialRatio);
+        function applyInitialHeight() {
+          const splitBarH = handleEl?.closest('.split-bar')?.offsetHeight || 0;
+          const available = Math.max(0, container.offsetHeight - splitBarH);
+          setTopHeight(available * initialRatio);
+        }
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(applyInitialHeight);
+        });
 
         handleEl.addEventListener('mousedown', (e) => {
           e.preventDefault();
@@ -2061,30 +2203,19 @@
         return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
       }
 
-      const ST = document.getElementById('ST');
-      const DH = document.getElementById('DH');
-      const SPC = document.querySelector('.spc');
       const TB_TOP = document.getElementById('TB_TOP');
       const DH2 = document.getElementById('DH2');
       const TABLES_SPLIT = document.getElementById('TABLES_SPLIT');
       const KEY_STEP = 16;
-
-      const formSplit = initVerticalSplit({
-        container: SPC,
-        topEl: ST,
-        handleEl: DH,
-        minTop: 40,
-        minBottom: 80,
-        initialRatio: 0.35,
-      });
+      const TABLES_TOP_RATIO = 0.53;
 
       const tablesSplit = initVerticalSplit({
         container: TABLES_SPLIT,
         topEl: TB_TOP,
         handleEl: DH2,
-        minTop: 100,
-        minBottom: 100,
-        initialRatio: 0.48,
+        minTop: 120,
+        minBottom: 120,
+        initialRatio: TABLES_TOP_RATIO,
       });
 
       document.addEventListener('keydown', (e) => {
@@ -2093,13 +2224,8 @@
 
         e.preventDefault();
         const delta = e.key === 'ArrowDown' ? KEY_STEP : -KEY_STEP;
-        if (e.shiftKey) {
-          tablesSplit.resizeTopByDelta(delta);
-          tablesSplit.flashHandle();
-          return;
-        }
-        formSplit.resizeTopByDelta(delta);
-        formSplit.flashHandle();
+        tablesSplit.resizeTopByDelta(delta);
+        tablesSplit.flashHandle();
       });
 
       // Sidebar collapse
