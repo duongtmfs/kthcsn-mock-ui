@@ -474,13 +474,24 @@
         border-top: 1px solid var(--acc-border-strong); vertical-align: middle;
       }
       .dt-total-label {
-        position: sticky; left: 0; z-index: 5;
         font-weight: 600; color: var(--acc-text-primary);
-        text-align: left; background: var(--background-bg-primary);
-        box-shadow: 2px 0 6px -2px rgba(17, 24, 39, 0.14);
-        border-right: 1px solid var(--acc-border-strong);
+        text-align: left;
       }
-      .dt-total-amount { font-weight: 700; text-align: right; white-space: nowrap; }
+      .dt-foot-add-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 22px; height: 22px; padding: 0; border: none; border-radius: 4px;
+        background: transparent; color: var(--color-brand-600); cursor: pointer;
+        flex-shrink: 0;
+      }
+      .dt-foot-add-btn:hover { background: var(--acc-hover); color: var(--color-brand-500); }
+      .dt-foot-add-btn svg { width: 16px; height: 16px; }
+      .dt tfoot td.dt-col-select { text-align: center; vertical-align: middle; }
+      .dt tfoot td.dt-total-label.dt-col-pinned {
+        background: var(--background-bg-primary);
+      }
+      .dt-total-amount {
+        font-weight: 700; text-align: right; white-space: nowrap;
+      }
 
       /* EDITABLE CELL styling */
       .cell-editable {
@@ -508,6 +519,22 @@
         border-color: var(--border-focus-ring) !important;
         box-shadow: 0 0 0 2px var(--border-focus-shadow);
         background: var(--background-bg-primary) !important;
+      }
+      .dt tbody td.has-validation-error {
+        background: #fef2f2;
+        box-shadow: inset 3px 0 0 0 #ef4444;
+      }
+      .dt tbody tr:nth-child(even) td.has-validation-error { background: #fef2f2; }
+      .dt tbody td.has-validation-error .tdi,
+      .dt tbody td.has-validation-error .tds,
+      .dt tbody td.has-validation-error .tdi:focus,
+      .dt tbody td.has-validation-error .tds:focus {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 3px #fdd7d7 !important;
+        background: var(--background-bg-primary) !important;
+      }
+      .dt tbody td.has-validation-error[data-editable="true"]:hover::after {
+        box-shadow: none;
       }
       .tdi.align-right { text-align: right; }
       select.tds {
@@ -547,16 +574,21 @@
       .bic.bd:hover { color: var(--color-brand-500); }
 
       /* Pinned columns */
-      .dt-col-stt { text-align: center; color: var(--acc-text-muted); }
-      .dt thead th.dt-col-stt, .dt thead th.dt-col-pinned { z-index: 6; background: #f8f9fa; }
-      .dt tbody td.dt-col-stt, .dt tbody td.dt-col-pinned {
+      /* Cột chọn dòng (thay STT) */
+      .dt-col-select { text-align: center; vertical-align: middle; }
+      .dt-row-select {
+        width: 14px; height: 14px; margin: 0; cursor: pointer;
+        accent-color: var(--color-brand-600);
+      }
+      .dt thead th.dt-col-select, .dt thead th.dt-col-pinned { z-index: 6; background: #f8f9fa; }
+      .dt tbody td.dt-col-select, .dt tbody td.dt-col-pinned {
         position: sticky; z-index: 2; background: var(--background-bg-primary);
       }
-      .dt tbody tr:nth-child(even) td.dt-col-stt,
+      .dt tbody tr:nth-child(even) td.dt-col-select,
       .dt tbody tr:nth-child(even) td.dt-col-pinned { background: var(--acc-surface-2); }
-      .dt tbody tr:hover td.dt-col-stt,
+      .dt tbody tr:hover td.dt-col-select,
       .dt tbody tr:hover td.dt-col-pinned { background: var(--acc-hover); }
-      .dt thead th.dt-col-stt, .dt thead th.dt-col-pinned { position: sticky; }
+      .dt thead th.dt-col-select, .dt thead th.dt-col-pinned { position: sticky; }
       .dt tfoot td.dt-col-pinned { position: sticky; z-index: 4; background: var(--background-bg-primary); }
       .dt-col-pinned-edge { box-shadow: 2px 0 6px -2px rgba(17,24,39,0.14); border-right: 1px solid var(--acc-border-strong) !important; }
       .dt thead th.dt-col-pinned-right,
@@ -568,6 +600,31 @@
       .dt tbody tr:nth-child(even) td.dt-col-pinned-right { background: var(--acc-surface-2); }
       .dt tbody tr:hover td.dt-col-pinned-right { background: var(--acc-hover); }
       .dt tfoot td.dt-col-pinned-right { z-index: 5; }
+      /* Selected row — ghi đè nền cột ghim / zebra / hover */
+      .dt tbody tr.is-row-selected,
+      .dt tbody tr.is-row-selected:nth-child(even) { background: #fff5f5; }
+      .dt tbody tr.is-row-selected td,
+      .dt tbody tr.is-row-selected:nth-child(even) td,
+      .dt tbody tr.is-row-selected td.dt-col-select,
+      .dt tbody tr.is-row-selected td.dt-col-pinned,
+      .dt tbody tr.is-row-selected td.dt-col-pinned-right,
+      .dt tbody tr.is-row-selected:nth-child(even) td.dt-col-select,
+      .dt tbody tr.is-row-selected:nth-child(even) td.dt-col-pinned,
+      .dt tbody tr.is-row-selected:nth-child(even) td.dt-col-pinned-right {
+        background: #fff5f5;
+      }
+      .dt tbody tr.is-row-selected:hover,
+      .dt tbody tr.is-row-selected:nth-child(even):hover { background: #feeaea; }
+      .dt tbody tr.is-row-selected:hover td,
+      .dt tbody tr.is-row-selected:nth-child(even):hover td,
+      .dt tbody tr.is-row-selected:hover td.dt-col-select,
+      .dt tbody tr.is-row-selected:hover td.dt-col-pinned,
+      .dt tbody tr.is-row-selected:hover td.dt-col-pinned-right,
+      .dt tbody tr.is-row-selected:nth-child(even):hover td.dt-col-select,
+      .dt tbody tr.is-row-selected:nth-child(even):hover td.dt-col-pinned,
+      .dt tbody tr.is-row-selected:nth-child(even):hover td.dt-col-pinned-right {
+        background: #feeaea;
+      }
       .dt-col-pinned-right-edge { box-shadow: -2px 0 6px -2px rgba(17,24,39,0.14); border-left: 1px solid var(--acc-border-strong) !important; }
       .dt thead th.is-pinned-col .th-label { color: var(--color-brand-600); }
 
@@ -895,6 +952,7 @@
     // ── ICONS ────────────────────────────────────────────────
     const ICON_COPY = '<svg class="ac-icon" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.25 6C7.25 3.38 9.38 1.25 12 1.25h6C20.62 1.25 22.75 3.38 22.75 6v6c0 2.62-2.13 4.75-4.75 4.75H16.75V18c0 2.62-2.13 4.75-4.75 4.75H6C3.38 22.75 1.25 20.62 1.25 18v-6C1.25 9.38 3.38 7.25 6 7.25h1.25V6zM8.75 7.25H12c2.62 0 4.75 2.13 4.75 4.75v3.25H18c1.8 0 3.25-1.45 3.25-3.25V6c0-1.8-1.45-3.25-3.25-3.25h-6C10.2 2.75 8.75 4.2 8.75 6v1.25zM6 8.75C4.2 8.75 2.75 10.2 2.75 12v6c0 1.8 1.45 3.25 3.25 3.25h6c1.8 0 3.25-1.45 3.25-3.25v-6c0-1.8-1.45-3.25-3.25-3.25H6z" fill="currentColor"/></svg>';
     const ICON_TRASH = '<svg class="ac-icon" viewBox="0 0 20 20" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.32 2.06A2.08 2.08 0 019.23 1.04h1.55c.77 0 1.48.38 1.91 1.02l.97 1.48H17.5a.63.63 0 010 1.25H2.5a.63.63 0 010-1.25h3.85l.97-1.48zM7.83 3.54h4.33l-.52-.79a.83.83 0 00-.69-.46H9.23a.83.83 0 00-.69.46l-.71 1.08v-.29zM4.17 6.04c.34 0 .62.28.62.63V15c0 1.5 1.21 2.71 2.71 2.71h5c1.5 0 2.71-1.21 2.71-2.71V6.67a.63.63 0 011.25 0V15A3.96 3.96 0 0112.5 18.96h-5A3.96 3.96 0 013.54 15V6.67c0-.35.28-.63.63-.63zm4.17 2.5c.34 0 .62.28.62.63v5a.63.63 0 01-1.25 0v-5c0-.35.28-.63.63-.63zm3.33 0c.35 0 .63.28.63.63v5a.63.63 0 01-1.25 0v-5c0-.35.28-.63.62-.63z" fill="currentColor"/></svg>';
+    const ICON_PLUS = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4.17a.83.83 0 01.83.83v4.17H15a.83.83 0 010 1.66h-4.17V15a.83.83 0 01-1.66 0v-4.17H5a.83.83 0 010-1.66h4.17V5a.83.83 0 01.83-.83z" fill="currentColor"/></svg>';
     const ICON_TH_MENU = '<svg width="4" height="14" viewBox="0 0 4 14" fill="none"><circle cx="2" cy="2" r="1.5" fill="currentColor"/><circle cx="2" cy="7" r="1.5" fill="currentColor"/><circle cx="2" cy="12" r="1.5" fill="currentColor"/></svg>';
 
     // ── DENSITY CONFIG ────────────────────────────────────────
@@ -927,7 +985,7 @@
 
     // ── COLUMN DEFS ────────────────────────────────────────
     const TB1_COLS_DEF = [
-      { key:'loaiNv',   label:'Loại NV',      required:true,  w:140, type:'select' },
+      { key:'loaiNv',   label:'Mã NV',      required:true,  w:140, type:'select' },
       { key:'dienGiai', label:'Diễn giải',     required:true,  w:320, type:'input' },
       { key:'tkNo',     label:'TK nợ',         required:true,  w:110, type:'input' },
       { key:'tkCo',     label:'TK có',         required:true,  w:110, type:'input' },
@@ -945,7 +1003,7 @@
       { key:'thaoTac',  label:'Thao tác',       required:true,  w:100, type:'action' },
     ];
     const TB2_COLS_DEF = [
-      { key:'loaiNv',   label:'Loại NV',      required:true,  w:140, type:'select' },
+      { key:'loaiNv',   label:'Mã NV',      required:true,  w:140, type:'select' },
       { key:'dienGiai', label:'Diễn giải',     required:true,  w:320, type:'input' },
       { key:'tkNbNo',   label:'TK NB nợ',      required:true,  w:120, type:'input' },
       { key:'tkNbCo',   label:'TK NB có',      required:true,  w:120, type:'input' },
@@ -966,7 +1024,7 @@
     function sumSoTien(rows) { return rows.reduce((s,r)=>s+Number(r.soTien||0),0); }
     function cloneRow(r) { return JSON.parse(JSON.stringify(r)); }
 
-    const STT_COL_W = 44;
+    const SELECT_COL_W = 44;
     const FLEX_COL_KEY = 'dienGiai';
 
     function colWidthStyle(w, key, resized) {
@@ -980,6 +1038,42 @@
       el.style.maxWidth = w + 'px';
     }
 
+    // Focus trap — giữ focus trong ô bắt buộc còn rỗng, chặn click ra ngoài
+    const cellFocusTrap = { td: null, control: null };
+    function activateCellFocusTrap(td) {
+      const control = td?.querySelector('.tdi, .tds');
+      if (!control) return;
+      cellFocusTrap.td = td;
+      cellFocusTrap.control = control;
+    }
+    function deactivateCellFocusTrap(td) {
+      if (!td || cellFocusTrap.td === td) {
+        cellFocusTrap.td = null;
+        cellFocusTrap.control = null;
+      }
+    }
+    function refocusTrappedCell() {
+      if (!cellFocusTrap.control) return;
+      cellFocusTrap.control.focus({ preventScroll: true });
+    }
+    if (!window.__dtCellFocusTrapBound) {
+      window.__dtCellFocusTrapBound = true;
+      document.addEventListener('mousedown', e => {
+        if (!cellFocusTrap.td) return;
+        if (cellFocusTrap.td.contains(e.target)) return;
+        if (e.target.closest('[data-action="add"]')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        refocusTrappedCell();
+      }, true);
+      document.addEventListener('focusin', e => {
+        if (!cellFocusTrap.td) return;
+        if (cellFocusTrap.td.contains(e.target)) return;
+        e.stopImmediatePropagation();
+        refocusTrappedCell();
+      }, true);
+    }
+
     // ── TABLE FACTORY ───────────────────────────────────────
     function createTable({ tableEl, colgroupEl, theadEl, tbodyEl, tfootEl, colsDef, data, totalElId, panelId, enableColumnResize = true, enableHeaderMenu = true }) {
       // State
@@ -989,13 +1083,70 @@
       let unpinnedOrder = defaultDataKeys();
       let colOrder = [];
       let sortState = { key: null, dir: 'asc' };
+      let selectedRows = new Set();
+
+      function pruneSelection() {
+        selectedRows = new Set([...selectedRows].filter(i => i >= 0 && i < data.length));
+      }
+      function reindexSelectionAfterDelete(deletedIndex) {
+        selectedRows = new Set([...selectedRows]
+          .filter(i => i !== deletedIndex)
+          .map(i => (i > deletedIndex ? i - 1 : i)));
+      }
+      function reindexSelectionAfterInsert(insertIndex) {
+        selectedRows = new Set([...selectedRows].map(i => (i >= insertIndex ? i + 1 : i)));
+      }
+      function isAllRowsSelected() {
+        return data.length > 0 && data.every((_, i) => selectedRows.has(i));
+      }
+      function isSomeRowsSelected() {
+        return selectedRows.size > 0 && !isAllRowsSelected();
+      }
+      function syncSelectAllCheckbox() {
+        const cb = theadEl.querySelector('[data-select-all]');
+        if (!cb) return;
+        cb.checked = isAllRowsSelected();
+        cb.indeterminate = isSomeRowsSelected();
+      }
+      function syncRowSelectedStyles() {
+        tbodyEl.querySelectorAll('tr[data-row-index]').forEach(tr => {
+          const i = Number(tr.dataset.rowIndex);
+          tr.classList.toggle('is-row-selected', selectedRows.has(i));
+        });
+      }
+      function setAllRowsSelected(checked) {
+        selectedRows = checked ? new Set(data.map((_, i) => i)) : new Set();
+        tbodyEl.querySelectorAll('[data-row-select]').forEach(inp => {
+          inp.checked = checked;
+        });
+        syncRowSelectedStyles();
+        syncSelectAllCheckbox();
+      }
+      function setRowSelected(rowIndex, checked) {
+        if (checked) selectedRows.add(rowIndex);
+        else selectedRows.delete(rowIndex);
+        tbodyEl.querySelector(`tr[data-row-index="${rowIndex}"]`)
+          ?.classList.toggle('is-row-selected', checked);
+        syncSelectAllCheckbox();
+      }
 
       function rebuildColumnOrder() {
         pinnedKeys = pinnedKeys.filter(k => k !== 'thaoTac');
         unpinnedOrder = unpinnedOrder.filter(k => k !== 'thaoTac');
         colOrder = [...pinnedKeys, ...unpinnedOrder];
       }
+      function getTotalLabelColKey() {
+        return getVisibleOrdered().find(k => k !== 'thaoTac') || null;
+      }
+      function ensureDefaultTotalLabelPin() {
+        const firstKey = defaultDataKeys()[0];
+        if (!firstKey || pinnedKeys.includes(firstKey)) return;
+        unpinnedOrder = unpinnedOrder.filter(k => k !== firstKey);
+        pinnedKeys = [firstKey, ...pinnedKeys];
+        rebuildColumnOrder();
+      }
       rebuildColumnOrder();
+      ensureDefaultTotalLabelPin();
 
       // ── Helpers
       function getCol(key) { return colState.find(c=>c.key===key); }
@@ -1010,7 +1161,7 @@
 
       function syncTableMinWidth() {
         const keys = getVisibleOrdered();
-        const total = STT_COL_W + keys.reduce((s, k) => s + (getCol(k)?.w || 0), 0);
+        const total = SELECT_COL_W + keys.reduce((s, k) => s + (getCol(k)?.w || 0), 0);
         tableEl.style.minWidth = total + 'px';
         tableEl.style.width = '100%';
       }
@@ -1058,13 +1209,120 @@
           </div>`;
         }
         if (col.type === 'select') {
-          return `<select class="tds"><option></option><option selected>${esc(row[key])}</option></select>`;
+          const val = row[key] ?? '';
+          return `<select class="tds"><option value=""${val===''?' selected':''}></option><option value="${esc(val)}"${val!==''?' selected':''}>${esc(val)}</option></select>`;
         }
         if (col.type === 'number') {
           return `<input class="tdi align-right" value="${esc(fmtVnd(row[key]))}" />`;
         }
         return `<input class="tdi" value="${esc(row[key]??'')}" />`;
       }
+
+      function readCellDomValue(td, colKey) {
+        const col = getCol(colKey);
+        if (!col || col.type === 'action') return null;
+        const inp = td.querySelector('.tdi, .tds');
+        if (!inp) return null;
+        if (col.type === 'number') {
+          const raw = inp.value.replace(/\./g, '').replace(/,/g, '').trim();
+          return raw;
+        }
+        return String(inp.value ?? '').trim();
+      }
+
+      function syncCellFromDom(td) {
+        const tr = td.closest('tr');
+        const colKey = td.dataset.col;
+        const rowIndex = Number(tr?.dataset.rowIndex);
+        if (!colKey || Number.isNaN(rowIndex) || !data[rowIndex]) return;
+        const val = readCellDomValue(td, colKey);
+        if (val !== null) data[rowIndex][colKey] = val;
+      }
+
+      function isRequiredCellEmpty(col, value) {
+        if (!col?.required) return false;
+        if (value === null || value === undefined) return true;
+        if (typeof value === 'string') return value.trim() === '';
+        return false;
+      }
+
+      function setCellValidationState(td, hasError) {
+        td.classList.toggle('has-validation-error', hasError);
+      }
+
+      function validateEditableCell(td, { activateTrapOnError = false } = {}) {
+        const colKey = td.dataset.col;
+        const col = getCol(colKey);
+        if (!col || col.type === 'action' || !col.required) {
+          setCellValidationState(td, false);
+          deactivateCellFocusTrap(td);
+          return true;
+        }
+        syncCellFromDom(td);
+        const tr = td.closest('tr');
+        const rowIndex = Number(tr?.dataset.rowIndex);
+        const empty = isRequiredCellEmpty(col, data[rowIndex]?.[colKey]);
+        setCellValidationState(td, empty);
+        if (empty) {
+          if (activateTrapOnError) {
+            activateCellFocusTrap(td);
+            refocusTrappedCell();
+          }
+          return false;
+        }
+        deactivateCellFocusTrap(td);
+        return true;
+      }
+
+      function validateAllRows() {
+        let firstErrorTd = null;
+        tbodyEl.querySelectorAll('td[data-editable="true"]').forEach(td => {
+          const col = getCol(td.dataset.col);
+          if (!col?.required) return;
+          if (!validateEditableCell(td, { activateTrapOnError: false }) && !firstErrorTd) {
+            firstErrorTd = td;
+          }
+        });
+        if (firstErrorTd) {
+          activateCellFocusTrap(firstErrorTd);
+          refocusTrappedCell();
+          firstErrorTd.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+          return false;
+        }
+        return true;
+      }
+
+      function bindCellValidationEvents() {
+        tbodyEl.addEventListener('focusout', e => {
+          const control = e.target.closest('.tdi, .tds');
+          if (!control || !tbodyEl.contains(control)) return;
+          const td = control.closest('td[data-editable="true"]');
+          if (!td) return;
+          setTimeout(() => {
+            if (cellFocusTrap.td && cellFocusTrap.td !== td && cellFocusTrap.td.contains(document.activeElement)) return;
+            validateEditableCell(td, { activateTrapOnError: true });
+          }, 0);
+        });
+
+        tbodyEl.addEventListener('input', e => {
+          const control = e.target.closest('.tdi, .tds');
+          if (!control || !tbodyEl.contains(control)) return;
+          const td = control.closest('td[data-editable="true"]');
+          if (!td || !td.classList.contains('has-validation-error')) return;
+          if (validateEditableCell(td, { activateTrapOnError: true }) && td.dataset.col === 'soTien') {
+            updateTotal();
+          }
+        });
+
+        tbodyEl.addEventListener('change', e => {
+          const control = e.target.closest('.tds');
+          if (!control || !tbodyEl.contains(control)) return;
+          const td = control.closest('td[data-editable="true"]');
+          if (!td) return;
+          validateEditableCell(td, { activateTrapOnError: true });
+        });
+      }
+      bindCellValidationEvents();
 
       // ── TH menu
       function renderThMenu(key, pinned) {
@@ -1084,7 +1342,7 @@
       // ── Colgroup
       function renderColgroup() {
         const keys = getVisibleOrdered();
-        colgroupEl.innerHTML = `<col style="${colWidthStyle(STT_COL_W)}" />` +
+        colgroupEl.innerHTML = `<col style="${colWidthStyle(SELECT_COL_W)}" />` +
           keys.map(k => {
             const w = getCol(k).w;
             const resized = getCol(k).resized;
@@ -1096,7 +1354,9 @@
       function renderHead() {
         const keys = getVisibleOrdered();
         theadEl.innerHTML = `<tr>
-          <th class="dt-col-stt" style="${colWidthStyle(STT_COL_W)}">STT</th>
+          <th class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}">
+            <input type="checkbox" class="dt-row-select" data-select-all aria-label="Chọn tất cả" />
+          </th>
           ${keys.map(k=>{
             const col = getCol(k);
             const pinnedCls = isPinned(k) ? ' is-pinned-col' : '';
@@ -1112,37 +1372,71 @@
         </tr>`;
       }
 
+      function createEmptyRow() {
+        const row = {};
+        colState.forEach(c => {
+          if (c.key !== 'thaoTac') row[c.key] = '';
+        });
+        return row;
+      }
+
+      function addNewRow() {
+        deactivateCellFocusTrap(cellFocusTrap.td);
+        data.push(createEmptyRow());
+        renderBody(); renderFoot(); applyPinned();
+        const newTr = tbodyEl.querySelector(`tr[data-row-index="${data.length - 1}"]`);
+        const firstEditable = newTr?.querySelector('td[data-editable="true"] .tdi, td[data-editable="true"] .tds');
+        firstEditable?.focus();
+      }
+
       // ── Body
       function renderBody() {
+        if (cellFocusTrap.td && !tbodyEl.contains(cellFocusTrap.td)) {
+          deactivateCellFocusTrap(cellFocusTrap.td);
+        }
         const keys = getVisibleOrdered();
         tbodyEl.innerHTML = data.map((row,i)=>`
-          <tr data-row-index="${i}">
-            <td class="dt-col-stt" style="${colWidthStyle(STT_COL_W)}">${i+1}</td>
+          <tr data-row-index="${i}" class="${selectedRows.has(i)?'is-row-selected':''}">
+            <td class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}">
+              <input type="checkbox" class="dt-row-select" data-row-select="${i}"
+                ${selectedRows.has(i)?'checked':''} aria-label="Chọn dòng ${i + 1}" />
+            </td>
             ${keys.map(k=>{
               const col = getCol(k);
               const isEditable = col.type !== 'action';
               const align = col.type === 'number' ? 'text-align:right;' : '';
-              return `<td data-col="${k}" style="${colWidthStyle(col.w, k, col.resized)};${align}"${isEditable?' data-editable="true"':''}>${renderCellContent(k,row)}</td>`;
+              const reqAttr = col.required && isEditable ? ' data-required="true"' : '';
+              return `<td data-col="${k}" style="${colWidthStyle(col.w, k, col.resized)};${align}"${isEditable?' data-editable="true"':''}${reqAttr}>${renderCellContent(k,row)}</td>`;
             }).join('')}
           </tr>`).join('');
         updateTotal();
+        syncSelectAllCheckbox();
       }
 
-      // ── Foot
+      // ── Foot — ô chọn: nút +; ô 2: "Tổng"
       function renderFoot() {
         const keys = getVisibleOrdered();
         const dataKeys = keys.filter(k=>k!=='thaoTac');
         const soTienIdx = dataKeys.indexOf('soTien');
         if (soTienIdx<0) { tfootEl.innerHTML=''; return; }
-        const labelSpan = 1 + soTienIdx; // STT col + cols before soTien
-        const after = dataKeys.length - soTienIdx - 1;
         const hasAction = keys.includes('thaoTac');
-        const soTienW = getCol('soTien')?.w || 160;
+        const labelKey = getTotalLabelColKey();
         const actionW = getCol('thaoTac')?.w || 100;
         tfootEl.innerHTML = `<tr>
-          <td colspan="${labelSpan}" class="dt-total-label">Tổng</td>
-          <td class="dt-total-amount" data-col="soTien" id="${totalElId}" style="${colWidthStyle(soTienW)}">${fmtVnd(sumSoTien(data))}</td>
-          ${after>0?`<td colspan="${after}"></td>`:''}
+          <td class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}">
+            <button type="button" class="dt-foot-add-btn" data-action="add" title="Thêm dòng">${ICON_PLUS}</button>
+          </td>
+          ${dataKeys.map(k=>{
+            const col = getCol(k);
+            const w = colWidthStyle(col.w, k, col.resized);
+            if (k === 'soTien') {
+              return `<td class="dt-total-amount" data-col="soTien" id="${totalElId}" style="${w}">${fmtVnd(sumSoTien(data))}</td>`;
+            }
+            if (k === labelKey) {
+              return `<td class="dt-total-label" data-col="${k}" style="${w}">Tổng</td>`;
+            }
+            return `<td data-col="${k}" style="${w}"></td>`;
+          }).join('')}
           ${hasAction?`<td data-col="thaoTac" style="${colWidthStyle(actionW)}"></td>`:''}
         </tr>`;
       }
@@ -1152,18 +1446,18 @@
         if (el) el.textContent = fmtVnd(sumSoTien(data));
       }
 
-      // ── Pinned layout — cột ghim được đưa lên đầu (sau STT), left cộng dồn theo khối ghim
+      // ── Pinned layout — cột chọn ghim trái, left cộng dồn theo khối ghim
       function applyPinned() {
-        const sttWidth = STT_COL_W;
+        const selectWidth = SELECT_COL_W;
         const keys = getVisibleOrdered();
         const pinnedVisible = keys.filter(k => pinnedKeys.includes(k));
 
-        tableEl.querySelectorAll('.dt-col-stt').forEach(el => {
+        tableEl.querySelectorAll('.dt-col-select').forEach(el => {
           el.classList.add('dt-col-pinned');
           el.style.left = '0px';
         });
 
-        let left = sttWidth;
+        let left = selectWidth;
         let lastPinnedKey = null;
 
         pinnedVisible.forEach(k => {
@@ -1179,7 +1473,7 @@
         tableEl.querySelectorAll('.dt-col-pinned-edge').forEach(el => el.classList.remove('dt-col-pinned-edge'));
         const edgeTarget = lastPinnedKey
           ? tableEl.querySelectorAll(`[data-col="${lastPinnedKey}"].dt-col-pinned`)
-          : tableEl.querySelectorAll('.dt-col-stt');
+          : tableEl.querySelectorAll('.dt-col-select');
         edgeTarget.forEach(el => el.classList.add('dt-col-pinned-edge'));
 
         keys.filter(k => !pinnedKeys.includes(k) && k !== 'thaoTac').forEach(k => {
@@ -1196,21 +1490,6 @@
           el.style.right = '0px';
           el.style.left = '';
         });
-
-        const labelCell = tfootEl.querySelector('.dt-total-label');
-        if (labelCell) {
-          const dataKeys = keys.filter(k => k !== 'thaoTac');
-          const soTienIdx = dataKeys.indexOf('soTien');
-          if (soTienIdx >= 0) {
-            let labelWidth = sttWidth;
-            for (let i = 0; i < soTienIdx; i++) {
-              labelWidth += getCol(dataKeys[i])?.w || 0;
-            }
-            labelCell.style.minWidth = labelWidth + 'px';
-            labelCell.style.width = labelWidth + 'px';
-            labelCell.style.maxWidth = labelWidth + 'px';
-          }
-        }
       }
 
       // ── Full render
@@ -1229,6 +1508,7 @@
         else sortState = {key, dir:'asc'};
         const mult = sortState.dir==='asc'?1:-1;
         data.sort((a,b)=>compare(a[key],b[key],key)*mult);
+        selectedRows = new Set();
         renderBody(); renderHead(); applyPinned();
       }
 
@@ -1267,20 +1547,44 @@
         });
       }
 
-      // ── Row actions
-      tbodyEl.addEventListener('click', e=>{
+      // ── Row select + row actions
+      tableEl.addEventListener('change', e => {
+        if (e.target.matches('[data-select-all]')) {
+          e.stopPropagation();
+          setAllRowsSelected(e.target.checked);
+          return;
+        }
+        if (e.target.matches('[data-row-select]')) {
+          e.stopPropagation();
+          setRowSelected(Number(e.target.dataset.rowSelect), e.target.checked);
+        }
+      });
+      tableEl.addEventListener('click', e=>{
         const btn = e.target.closest('[data-action]');
         if (!btn) return;
+        if (btn.dataset.action === 'add') {
+          e.preventDefault();
+          e.stopPropagation();
+          addNewRow();
+          return;
+        }
+      });
+      tbodyEl.addEventListener('click', e=>{
+        const btn = e.target.closest('[data-action]');
+        if (!btn || btn.dataset.action === 'add') return;
         const tr = btn.closest('tr');
         if (!tr) return;
         const i = Number(tr.dataset.rowIndex);
         if (isNaN(i)||i<0||i>=data.length) return;
         if (btn.dataset.action==='copy') {
           data.splice(i+1,0,cloneRow(data[i]));
+          reindexSelectionAfterInsert(i + 1);
         } else if (btn.dataset.action==='delete') {
           if (data.length<=1) return;
           data.splice(i,1);
+          reindexSelectionAfterDelete(i);
         }
+        pruneSelection();
         renderBody(); renderFoot(); applyPinned();
       });
 
@@ -1501,8 +1805,9 @@
         colState = colsDef.map(c=>({...c,visible:true,w:c.w,resized:false}));
         pinnedKeys = [];
         unpinnedOrder = defaultDataKeys();
-        rebuildColumnOrder();
+        ensureDefaultTotalLabelPin();
         sortState = {key:null,dir:'asc'};
+        selectedRows = new Set();
         panel.hidden=true;
         applyDensity('default');
         fullRender();
@@ -1517,14 +1822,14 @@
 
       fullRender();
 
-      return { fullRender };
+      return { fullRender, validateAll: validateAllRows };
     }
 
     // ── INIT TABLES ─────────────────────────────────────────
     const tb1Data = FAKE_TB1.map(cloneRow);
     const tb2Data = FAKE_TB2.map(cloneRow);
 
-    createTable({
+    const tb1 = createTable({
       tableEl: document.getElementById('table1'),
       colgroupEl: document.getElementById('table1-colgroup'),
       theadEl: document.getElementById('table1-thead'),
@@ -1535,7 +1840,7 @@
       totalElId: 'tb1-total',
       panelId: '1',
     });
-    createTable({
+    const tb2 = createTable({
       tableEl: document.getElementById('table2'),
       colgroupEl: document.getElementById('table2-colgroup'),
       theadEl: document.getElementById('table2-thead'),
@@ -1545,6 +1850,10 @@
       data: tb2Data,
       totalElId: 'tb2-total',
       panelId: '2',
+    });
+
+    document.querySelector('.btn-page--save')?.addEventListener('click', () => {
+      tb1.validateAll() && tb2.validateAll();
     });
 
     // ── EXCHANGE RATE ─────────────────────────────────────────
