@@ -370,6 +370,27 @@
       .btn-col:hover { background: var(--acc-selected); }
       .btn-col svg { flex-shrink: 0; width: 14px !important; height: 14px !important; }
 
+      /* Tooltip floating (render trên body, không bị clip bởi overflow table) */
+      .app-tooltip {
+        position: fixed;
+        z-index: 10000;
+        padding: 4px 8px;
+        border-radius: var(--radius-sm);
+        background: #1f2937;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.3;
+        white-space: nowrap;
+        pointer-events: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+      .app-tooltip[hidden] { display: none; }
+      html[data-theme='dark'] .app-tooltip {
+        background: #e5e7eb;
+        color: #111827;
+      }
+
       /* COLUMN CONFIG PANEL */
       .col-panel {
         position: absolute; right: 0; top: calc(100% + 6px);
@@ -405,27 +426,21 @@
       .col-tab-content { display: none; }
       .col-tab-content.act { display: block; }
 
-      /* Visibility list */
-      .col-vis-body { max-height: 220px; overflow-y: auto; padding: 6px; }
-      .col-item {
-        display: flex; align-items: center; gap: 8px;
-        padding: 5px 8px; border-radius: var(--radius-sm);
-        font-size: 12px;
-      }
-      .col-item:hover { background: var(--acc-hover); }
-      .col-item input { accent-color: var(--color-brand-600); cursor: pointer; }
-      .col-item.is-disabled { opacity: 0.5; }
-
-      /* Reorder list */
-      .col-order-body { max-height: 220px; overflow-y: auto; padding: 6px; }
-      .col-order-item {
+      /* Column visibility + order (merged) */
+      .col-cols-body { max-height: 220px; overflow-y: auto; padding: 6px; }
+      .col-cols-item {
         display: flex; align-items: center; gap: 8px;
         padding: 5px 8px; border-radius: var(--radius-sm);
         font-size: 12px; user-select: none;
         background: var(--background-bg-primary);
         border: 1px solid transparent;
       }
-      .col-order-item:hover { background: var(--acc-hover); border-color: var(--acc-border); }
+      .col-cols-item:hover { background: var(--acc-hover); border-color: var(--acc-border); }
+      .col-cols-check {
+        display: flex; align-items: center; flex-shrink: 0;
+      }
+      .col-cols-check input { accent-color: var(--color-brand-600); cursor: pointer; }
+      .col-cols-check.is-disabled { opacity: 0.5; }
       .col-order-label { flex: 1; min-width: 0; }
       .col-order-actions {
         display: flex; flex-direction: column; gap: 2px; flex-shrink: 0;
@@ -447,27 +462,6 @@
         font-size: 10px; padding: 1px 5px; border-radius: 10px;
         background: var(--acc-border); color: var(--acc-text-muted);
       }
-
-      /* Column width list */
-      .col-width-body { max-height: 220px; overflow-y: auto; padding: 6px; }
-      .col-width-item {
-        display: flex; align-items: center; gap: 8px;
-        padding: 5px 8px; border-radius: var(--radius-sm); font-size: 12px;
-      }
-      .col-width-item:hover { background: var(--acc-hover); }
-      .col-width-label { flex: 1; min-width: 0; }
-      .col-width-input {
-        width: 72px; height: 26px;
-        border: 1px solid var(--border-border-solid);
-        border-radius: var(--radius-sm);
-        padding: 0 6px; font-size: 12px; text-align: right;
-        color: var(--acc-text-primary); background: var(--background-bg-primary);
-      }
-      .col-width-input:focus {
-        outline: none; border-color: var(--border-focus-ring);
-        box-shadow: 0 0 0 2px var(--border-focus-shadow);
-      }
-      .col-width-unit { color: var(--acc-text-muted); font-size: 11px; flex-shrink: 0; }
 
       /* Density */
       .col-density-body { padding: 10px 12px; }
@@ -564,15 +558,17 @@
       }
       .dt-foot-add-btn {
         display: inline-flex; align-items: center; justify-content: center;
-        width: 22px; height: 22px; padding: 0; border: none; border-radius: 4px;
+        gap: 4px; height: 28px; padding: 0 6px; border: none; border-radius: 4px;
         background: transparent; color: var(--color-brand-600); cursor: pointer;
-        flex-shrink: 0;
+        flex-shrink: 0; font-size: 12px; font-weight: 500; white-space: nowrap;
       }
       .dt-foot-add-btn:hover { background: var(--acc-hover); color: var(--color-brand-500); }
-      .dt-foot-add-btn svg { width: 16px; height: 16px; }
+      .dt-foot-add-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+      .dt-foot-action-cell { text-align: center; vertical-align: middle; }
       .dt tfoot td.dt-col-select { text-align: center; vertical-align: middle; }
-      .dt tfoot td.dt-total-label.dt-col-pinned {
+      .dt tfoot td.dt-foot-slot-total.dt-col-pinned {
         background: var(--background-bg-primary);
+        z-index: 4;
       }
       .dt-total-amount {
         font-weight: 700; text-align: right; white-space: nowrap;
@@ -781,7 +777,7 @@
       <aside class="app-sidebar" aria-label="Sidebar"></aside>
       <div class="app-main">
         <header class="app-header">
-          <button type="button" class="btn-sidebar-toggle" id="btnSidebarToggle" aria-label="Thu gọn sidebar" aria-expanded="true" title="Thu gọn sidebar">
+          <button type="button" class="btn-sidebar-toggle" id="btnSidebarToggle" aria-label="Thu gọn sidebar" aria-expanded="true" data-tooltip="Thu gọn sidebar">
             <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <path d="M2 4h14M2 9h14M2 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
@@ -792,7 +788,7 @@
             class="btn-theme-toggle"
             id="btnThemeToggle"
             aria-label="Bật giao diện tối"
-            title="Bật giao diện tối"
+            data-tooltip="Bật giao diện tối"
           >
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6" />
@@ -816,7 +812,7 @@
 
         <div class="page-header">
           <div class="page-header-left">
-            <button type="button" class="btn-page-back" title="Quay lại">
+            <button type="button" class="btn-page-back" data-tooltip="Quay lại" aria-label="Quay lại">
               <svg viewBox="0 0 16 14" fill="none" aria-hidden="true">
                 <path d="M6.4 13.4L7.52 12.28 3.04 7.8H16V6.2H3.04L7.52 1.72 6.4.6 0 7l6.4 6.4z" fill="currentColor"/>
               </svg>
@@ -824,13 +820,13 @@
             <h1 class="page-header-title">Thêm mới nhận dự toán / Lệnh chi</h1>
           </div>
           <div class="page-header-actions">
-            <button type="button" class="btn-page btn-page--ghost">
+            <button type="button" class="btn-page btn-page--ghost" data-tooltip="Hủy bỏ">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89 2.75 2.75 6.89 2.75 12S6.89 21.25 12 21.25 21.25 17.11 21.25 12 17.11 2.75 12 2.75zm-2.36 5.53a.75.75 0 00-1.06 1.06L10.94 12l-2.36 2.36a.75.75 0 001.06 1.06L12 13.06l2.36 2.36a.75.75 0 001.06-1.06L13.06 12l2.36-2.36a.75.75 0 00-1.06-1.06L12 10.94 9.64 8.28z" fill="currentColor"/>
               </svg>
               Hủy bỏ
             </button>
-            <button type="button" class="btn-page btn-page--save">
+            <button type="button" class="btn-page btn-page--save" data-tooltip="Lưu lại">
               <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 2.06A2.44 2.44 0 002.06 4.5v9A2.44 2.44 0 004.5 15.94h.19V12c0-1.14.93-2.06 2.06-2.06h4.5c1.13 0 2.06.92 2.06 2.06v3.94h.19a2.44 2.44 0 002.44-2.44V6.91a2.44 2.44 0 00-.72-1.73l-2.41-2.41A2.44 2.44 0 0011.09.94H4.5zm7.69 13.88V12c0-.52-.42-.94-.94-.94H6.75c-.52 0-.94.42-.94.94v3.94h6.38zM6.19 5.25c0-.31.25-.56.56-.56h4.5c.31 0 .56.25.56.56s-.25.56-.56.56h-4.5a.56.56 0 01-.56-.56z" fill="currentColor"/>
               </svg>
@@ -849,7 +845,6 @@
                     <h3 class="form-block-title">Thông tin chung</h3>
                     <!-- Left: 3-column grid -->
                     <div class="fl">
-
                     <div class="form-grid">
                       <div class="fr2">
                         <label>Loại chứng từ<span class="req">*</span></label>
@@ -878,14 +873,14 @@
                         <input class="fc" placeholder="Nhập" />
                       </div>
                       <div class="fr2" style="grid-column: span 2">
+                        <label>Nội dung</label>
+                        <input class="fc" type="text" placeholder="Nhập" />
+                      </div>
+                      <div class="fr2">
                         <label>TK đơn vị</label>
                         <select class="fc">
                           <option>3713.1.1006789 - KBNN Khu vực I-PGD số 1</option>
                         </select>
-                      </div>
-                      <div class="fr2">
-                        <label>Nội dung</label>
-                        <textarea class="fc" placeholder="Nhập" style="height:28px;resize:none"></textarea>
                       </div>
                     </div>
                     </div>
@@ -921,9 +916,6 @@
                 </div>
               </div>
             </div>
-
-      
-
             <!-- TABLES -->
             <div class="sb2" id="SB2">
               <div class="pad tables-split" id="TABLES_SPLIT">
@@ -948,7 +940,7 @@
                         </div>
                         <span class="tb-sep">|</span>
                         <div class="tb-actions-wrap">
-                          <button class="btn-col" type="button" id="btnColToggle" aria-expanded="false">
+                          <button class="btn-col" type="button" id="btnColToggle" aria-expanded="false" data-tooltip="Cấu hình bảng">
                             <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
                               <path d="M1.875 2.81A.56.56 0 012.44 2.25h.37c.55 0 1.07.22 1.46.6.39.39.6.9.6 1.46v9.38c0 .55-.21 1.07-.6 1.46-.39.38-.91.6-1.46.6h-.37a.56.56 0 010-1.13h.37c.52 0 .94-.42.94-.93V4.31c0-.52-.42-.94-.94-.94h-.37a.56.56 0 01-.56-.56zM6 4.31c0-.55.22-1.07.6-1.46.39-.38.9-.6 1.46-.6h1.88c.55 0 1.07.22 1.46.6.38.39.6.91.6 1.46v9.38c0 .55-.22 1.07-.6 1.46-.39.38-.91.6-1.46.6H8.06a2.06 2.06 0 01-2.06-2.06V4.31zM8.06 3.37c-.52 0-.94.42-.94.94v9.38c0 .52.42.94.94.94h1.88c.52 0 .94-.42.94-.94V4.31c0-.52-.42-.94-.94-.94H8.06zM15.56 2.25a.56.56 0 010 1.13h-.38c-.51 0-.93.42-.93.93v9.38c0 .51.42.93.93.93h.38a.56.56 0 010 1.13h-.38c-.55 0-1.07-.22-1.46-.6a2.06 2.06 0 01-.6-1.46V4.31c0-.55.22-1.07.6-1.46.39-.38.91-.6 1.46-.6h.38z" fill="currentColor"/>
                             </svg>
@@ -957,29 +949,21 @@
                           <div class="col-panel" id="colPanel1" hidden>
                             <div class="col-panel-hd">
                               <span class="col-panel-hd-title">Cấu hình bảng</span>
-                              <button class="col-panel-close" id="colPanelClose1">×</button>
+                              <button class="col-panel-close" id="colPanelClose1" type="button" data-tooltip="Đóng" aria-label="Đóng">×</button>
                             </div>
                             <div class="col-panel-tabs">
-                              <div class="col-tab act" data-tab="vis" data-panel="1">Ẩn/hiện cột</div>
-                              <div class="col-tab" data-tab="order" data-panel="1">Thứ tự cột</div>
-                              <div class="col-tab" data-tab="width" data-panel="1">Độ rộng cột</div>
+                              <div class="col-tab act" data-tab="cols" data-panel="1">Ẩn/hiện & thứ tự</div>
                               <div class="col-tab" data-tab="density" data-panel="1">Mật độ</div>
                             </div>
-                            <div class="col-tab-content act" id="p1-vis">
-                              <div class="col-vis-body" id="colVisBody1"></div>
-                            </div>
-                            <div class="col-tab-content" id="p1-order">
-                              <div class="col-order-body" id="colOrderBody1"></div>
-                            </div>
-                            <div class="col-tab-content" id="p1-width">
-                              <div class="col-width-body" id="colWidthBody1"></div>
+                            <div class="col-tab-content act" id="p1-cols">
+                              <div class="col-cols-body" id="colColsBody1"></div>
                             </div>
                             <div class="col-tab-content" id="p1-density">
                               <div class="col-density-body" id="colDensityBody1"></div>
                             </div>
                             <div class="col-panel-ft">
-                              <button id="colPanelReset1">Đặt lại</button>
-                              <button class="btn-apply" id="colPanelApply1">Áp dụng</button>
+                              <button type="button" id="colPanelReset1" data-tooltip="Đặt lại cấu hình">Đặt lại</button>
+                              <button type="button" class="btn-apply" id="colPanelApply1" data-tooltip="Áp dụng cấu hình">Áp dụng</button>
                             </div>
                           </div>
                         </div>
@@ -1009,7 +993,7 @@
                     <div class="tb-toolbar">
                       <h3 class="tb-section-title">Hạch toán đồng thời</h3>
                       <div class="tb-actions-wrap" style="margin-left:auto">
-                        <button class="btn-col" type="button" id="btnColToggle2" aria-expanded="false">
+                        <button class="btn-col" type="button" id="btnColToggle2" aria-expanded="false" data-tooltip="Cấu hình bảng">
                           <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
                             <path d="M1.875 2.81A.56.56 0 012.44 2.25h.37c.55 0 1.07.22 1.46.6.39.39.6.9.6 1.46v9.38c0 .55-.21 1.07-.6 1.46-.39.38-.91.6-1.46.6h-.37a.56.56 0 010-1.13h.37c.52 0 .94-.42.94-.93V4.31c0-.52-.42-.94-.94-.94h-.37a.56.56 0 01-.56-.56zM6 4.31c0-.55.22-1.07.6-1.46.39-.38.9-.6 1.46-.6h1.88c.55 0 1.07.22 1.46.6.38.39.6.91.6 1.46v9.38c0 .55-.22 1.07-.6 1.46-.39.38-.91.6-1.46.6H8.06a2.06 2.06 0 01-2.06-2.06V4.31zM8.06 3.37c-.52 0-.94.42-.94.94v9.38c0 .52.42.94.94.94h1.88c.52 0 .94-.42.94-.94V4.31c0-.52-.42-.94-.94-.94H8.06zM15.56 2.25a.56.56 0 010 1.13h-.38c-.51 0-.93.42-.93.93v9.38c0 .51.42.93.93.93h.38a.56.56 0 010 1.13h-.38c-.55 0-1.07-.22-1.46-.6a2.06 2.06 0 01-.6-1.46V4.31c0-.55.22-1.07.6-1.46.39-.38.91-.6 1.46-.6h.38z" fill="currentColor"/>
                           </svg>
@@ -1018,29 +1002,21 @@
                         <div class="col-panel" id="colPanel2" hidden>
                           <div class="col-panel-hd">
                             <span class="col-panel-hd-title">Cấu hình bảng</span>
-                            <button class="col-panel-close" id="colPanelClose2">×</button>
+                            <button class="col-panel-close" id="colPanelClose2" type="button" data-tooltip="Đóng" aria-label="Đóng">×</button>
                           </div>
                           <div class="col-panel-tabs">
-                            <div class="col-tab act" data-tab="vis" data-panel="2">Ẩn/hiện cột</div>
-                            <div class="col-tab" data-tab="order" data-panel="2">Thứ tự cột</div>
-                            <div class="col-tab" data-tab="width" data-panel="2">Độ rộng cột</div>
+                            <div class="col-tab act" data-tab="cols" data-panel="2">Ẩn/hiện & thứ tự</div>
                             <div class="col-tab" data-tab="density" data-panel="2">Mật độ</div>
                           </div>
-                          <div class="col-tab-content act" id="p2-vis">
-                            <div class="col-vis-body" id="colVisBody2"></div>
-                          </div>
-                          <div class="col-tab-content" id="p2-order">
-                            <div class="col-order-body" id="colOrderBody2"></div>
-                          </div>
-                          <div class="col-tab-content" id="p2-width">
-                            <div class="col-width-body" id="colWidthBody2"></div>
+                          <div class="col-tab-content act" id="p2-cols">
+                            <div class="col-cols-body" id="colColsBody2"></div>
                           </div>
                           <div class="col-tab-content" id="p2-density">
                             <div class="col-density-body" id="colDensityBody2"></div>
                           </div>
                           <div class="col-panel-ft">
-                            <button id="colPanelReset2">Đặt lại</button>
-                            <button class="btn-apply" id="colPanelApply2">Áp dụng</button>
+                            <button type="button" id="colPanelReset2" data-tooltip="Đặt lại cấu hình">Đặt lại</button>
+                            <button type="button" class="btn-apply" id="colPanelApply2" data-tooltip="Áp dụng cấu hình">Áp dụng</button>
                           </div>
                         </div>
                       </div>
@@ -1116,7 +1092,7 @@
       { key:'capPhat',  label:'Cấp phát',       required:false, w:120, type:'input' },
       { key:'duAn',     label:'Dự án',          required:false, w:200, type:'input' },
       { key:'dtth',     label:'ĐTTH',           required:false, w:100, type:'input' },
-      { key:'thaoTac',  label:'Thao tác',       required:true,  w:100, type:'action' },
+      { key:'thaoTac',  label:'Thao tác',       required:true,  w:120, type:'action' },
     ];
     const TB2_COLS_DEF = [
       { key:'loaiNv',   label:'Mã NV',      required:true,  w:140, type:'select' },
@@ -1129,7 +1105,7 @@
       { key:'loaiKhoan',label:'Loại - Khoản',   required:false, w:150, type:'input' },
       { key:'mucTm',    label:'Mục/TM',         required:false, w:120, type:'input' },
       { key:'dtth',     label:'ĐTTH',           required:false, w:100, type:'input' },
-      { key:'thaoTac',  label:'Thao tác',       required:true,  w:100, type:'action' },
+      { key:'thaoTac',  label:'Thao tác',       required:true,  w:120, type:'action' },
     ];
 
     // ── UTILS ────────────────────────────────────────────────
@@ -1191,7 +1167,7 @@
     }
 
     // ── TABLE FACTORY ───────────────────────────────────────
-    function createTable({ tableEl, colgroupEl, theadEl, tbodyEl, tfootEl, colsDef, data, totalElId, panelId, enableColumnResize = true, enableHeaderMenu = true }) {
+    function createTable({ tableEl, colgroupEl, theadEl, tbodyEl, tfootEl, colsDef, data, totalElId, panelId, enableColumnResize = true, enableHeaderMenu = true, showSelectColumn = false }) {
       // State
       let colState = colsDef.map(c => ({ ...c, visible: true, w: c.w, resized: false }));
       const defaultDataKeys = () => colsDef.filter(c => c.key !== 'thaoTac').map(c => c.key);
@@ -1251,18 +1227,47 @@
         unpinnedOrder = unpinnedOrder.filter(k => k !== 'thaoTac');
         colOrder = [...pinnedKeys, ...unpinnedOrder];
       }
-      function getTotalLabelColKey() {
-        return getVisibleOrdered().find(k => k !== 'thaoTac') || null;
+      /** Cột neo footer "Tổng" — cột dữ liệu đầu tiên. */
+      function getFootTotalKey() {
+        const dataKeys = getVisibleOrdered().filter(k => k !== 'thaoTac');
+        return dataKeys[0] || null;
       }
-      function ensureDefaultTotalLabelPin() {
-        const firstKey = defaultDataKeys()[0];
-        if (!firstKey || pinnedKeys.includes(firstKey)) return;
-        unpinnedOrder = unpinnedOrder.filter(k => k !== firstKey);
-        pinnedKeys = [firstKey, ...pinnedKeys];
-        rebuildColumnOrder();
+      function getLeftPinSeedKeys() {
+        const totalKey = getFootTotalKey();
+        return totalKey ? [totalKey] : [];
+      }
+      function selectColOffset() {
+        return showSelectColumn ? SELECT_COL_W : 0;
+      }
+      function renderSelectColHtml() {
+        if (!showSelectColumn) return '';
+        return `<col style="${colWidthStyle(SELECT_COL_W)}" />`;
+      }
+      function renderSelectHeadCell() {
+        if (!showSelectColumn) return '';
+        return `<th class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}">
+            <input type="checkbox" class="dt-row-select" data-select-all aria-label="Chọn tất cả" />
+          </th>`;
+      }
+      function renderSelectBodyCell(i) {
+        if (!showSelectColumn) return '';
+        return `<td class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}">
+              <input type="checkbox" class="dt-row-select" data-row-select="${i}"
+                ${selectedRows.has(i) ? 'checked' : ''} aria-label="Chọn dòng ${i + 1}" />
+            </td>`;
+      }
+      function renderSelectFootCell() {
+        if (!showSelectColumn) return '';
+        return `<td class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}"></td>`;
+      }
+      function renderFootActionAddCell(actionW) {
+        return `<td data-col="thaoTac" class="dt-foot-action-cell" style="${colWidthStyle(actionW)}">
+            <button type="button" class="dt-foot-add-btn" data-action="add" data-tooltip="Thêm dòng">
+              ${ICON_PLUS}<span>Thêm dòng</span>
+            </button>
+          </td>`;
       }
       rebuildColumnOrder();
-      ensureDefaultTotalLabelPin();
 
       // ── Helpers
       function getCol(key) { return colState.find(c=>c.key===key); }
@@ -1277,7 +1282,7 @@
 
       function syncTableMinWidth() {
         const keys = getVisibleOrdered();
-        const total = SELECT_COL_W + keys.reduce((s, k) => s + (getCol(k)?.w || 0), 0);
+        const total = selectColOffset() + keys.reduce((s, k) => s + (getCol(k)?.w || 0), 0);
         tableEl.style.minWidth = total + 'px';
         tableEl.style.width = '100%';
       }
@@ -1320,8 +1325,8 @@
         if (!col) return '';
         if (col.type === 'action') {
           return `<div class="ac">
-            <button class="bic bc2" type="button" title="Sao chép" data-action="copy">${ICON_COPY}</button>
-            <button class="bic bd" type="button" title="Xoá" data-action="delete">${ICON_TRASH}</button>
+            <button class="bic bc2" type="button" data-tooltip="Sao chép dòng" aria-label="Sao chép dòng" data-action="copy">${ICON_COPY}</button>
+            <button class="bic bd" type="button" data-tooltip="Xóa dòng" aria-label="Xóa dòng" data-action="delete">${ICON_TRASH}</button>
           </div>`;
         }
         if (col.type === 'select') {
@@ -1444,13 +1449,13 @@
       function renderThMenu(key, pinned) {
         if (key==='thaoTac') return '';
         const pinAction = pinned
-          ? `<button data-menu-action="unpin" data-col-key="${key}">Bỏ ghim cột</button>`
-          : `<button data-menu-action="pin" data-col-key="${key}">Ghim cột</button>`;
+          ? `<button type="button" data-menu-action="unpin" data-col-key="${key}" title="Bỏ ghim cột">Bỏ ghim cột</button>`
+          : `<button type="button" data-menu-action="pin" data-col-key="${key}" title="Ghim cột">Ghim cột</button>`;
         return `<div class="th-menu-wrap">
-          <button type="button" class="th-menu-btn" data-col-key="${key}" aria-haspopup="true" aria-expanded="false">${ICON_TH_MENU}</button>
+          <button type="button" class="th-menu-btn" data-col-key="${key}" aria-haspopup="true" aria-expanded="false" data-tooltip="Tùy chọn cột" aria-label="Tùy chọn cột">${ICON_TH_MENU}</button>
           <div class="th-menu-dropdown" hidden>
             ${pinAction}
-            <button data-menu-action="sort" data-col-key="${key}">Sắp xếp</button>
+            <button type="button" data-menu-action="sort" data-col-key="${key}" title="Sắp xếp cột">Sắp xếp</button>
           </div>
         </div>`;
       }
@@ -1458,7 +1463,7 @@
       // ── Colgroup
       function renderColgroup() {
         const keys = getVisibleOrdered();
-        colgroupEl.innerHTML = `<col style="${colWidthStyle(SELECT_COL_W)}" />` +
+        colgroupEl.innerHTML = renderSelectColHtml() +
           keys.map(k => {
             const w = getCol(k).w;
             const resized = getCol(k).resized;
@@ -1470,9 +1475,7 @@
       function renderHead() {
         const keys = getVisibleOrdered();
         theadEl.innerHTML = `<tr>
-          <th class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}">
-            <input type="checkbox" class="dt-row-select" data-select-all aria-label="Chọn tất cả" />
-          </th>
+          ${renderSelectHeadCell()}
           ${keys.map(k=>{
             const col = getCol(k);
             const pinnedCls = isPinned(k) ? ' is-pinned-col' : '';
@@ -1513,10 +1516,7 @@
         const keys = getVisibleOrdered();
         tbodyEl.innerHTML = data.map((row,i)=>`
           <tr data-row-index="${i}" class="${selectedRows.has(i)?'is-row-selected':''}">
-            <td class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}">
-              <input type="checkbox" class="dt-row-select" data-row-select="${i}"
-                ${selectedRows.has(i)?'checked':''} aria-label="Chọn dòng ${i + 1}" />
-            </td>
+            ${renderSelectBodyCell(i)}
             ${keys.map(k=>{
               const col = getCol(k);
               const isEditable = col.type !== 'action';
@@ -1529,31 +1529,29 @@
         syncSelectAllCheckbox();
       }
 
-      // ── Foot — ô chọn: nút +; ô 2: "Tổng"
+      // ── Foot — "Tổng" ở cột dữ liệu đầu tiên; "Thêm dòng" ở cột Thao tác
       function renderFoot() {
         const keys = getVisibleOrdered();
-        const dataKeys = keys.filter(k=>k!=='thaoTac');
+        const dataKeys = keys.filter(k => k !== 'thaoTac');
         const soTienIdx = dataKeys.indexOf('soTien');
-        if (soTienIdx<0) { tfootEl.innerHTML=''; return; }
+        if (soTienIdx < 0) { tfootEl.innerHTML = ''; return; }
         const hasAction = keys.includes('thaoTac');
-        const labelKey = getTotalLabelColKey();
-        const actionW = getCol('thaoTac')?.w || 100;
+        const actionW = getCol('thaoTac')?.w || 120;
+        const footTotalKey = getFootTotalKey();
         tfootEl.innerHTML = `<tr>
-          <td class="dt-col-select" style="${colWidthStyle(SELECT_COL_W)}">
-            <button type="button" class="dt-foot-add-btn" data-action="add" title="Thêm dòng">${ICON_PLUS}</button>
-          </td>
-          ${dataKeys.map(k=>{
+          ${renderSelectFootCell()}
+          ${dataKeys.map((k) => {
             const col = getCol(k);
             const w = colWidthStyle(col.w, k, col.resized);
+            if (k === footTotalKey && k !== 'soTien') {
+              return `<td class="dt-total-label dt-foot-slot-total" data-foot-slot="total" data-col="${k}" style="${w}">Tổng</td>`;
+            }
             if (k === 'soTien') {
               return `<td class="dt-total-amount" data-col="soTien" id="${totalElId}" style="${w}">${fmtVnd(sumSoTien(data))}</td>`;
             }
-            if (k === labelKey) {
-              return `<td class="dt-total-label" data-col="${k}" style="${w}">Tổng</td>`;
-            }
             return `<td data-col="${k}" style="${w}"></td>`;
           }).join('')}
-          ${hasAction?`<td data-col="thaoTac" style="${colWidthStyle(actionW)}"></td>`:''}
+          ${hasAction ? renderFootActionAddCell(actionW) : ''}
         </tr>`;
       }
 
@@ -1562,22 +1560,33 @@
         if (el) el.textContent = fmtVnd(sumSoTien(data));
       }
 
-      // ── Pinned layout — cột chọn ghim trái, left cộng dồn theo khối ghim
+      // ── Pinned layout — ô 1 (+) và ô 2 (Tổng) luôn ghim trái; thêm ghim cột user chọn
       function applyPinned() {
-        const selectWidth = SELECT_COL_W;
+        const selectWidth = selectColOffset();
         const keys = getVisibleOrdered();
-        const pinnedVisible = keys.filter(k => pinnedKeys.includes(k));
 
-        tableEl.querySelectorAll('.dt-col-select').forEach(el => {
-          el.classList.add('dt-col-pinned');
-          el.style.left = '0px';
+        tableEl.querySelectorAll('.dt-col-pinned, .dt-col-pinned-edge, .dt-col-pinned-right, .dt-col-pinned-right-edge').forEach(el => {
+          el.classList.remove('dt-col-pinned', 'dt-col-pinned-edge', 'dt-col-pinned-right', 'dt-col-pinned-right-edge');
+          el.style.left = '';
+          el.style.right = '';
         });
 
-        let left = selectWidth;
-        let lastPinnedKey = null;
+        if (showSelectColumn) {
+          tableEl.querySelectorAll('.dt-col-select').forEach(el => {
+            el.classList.add('dt-col-pinned');
+            el.style.left = '0px';
+          });
+        }
 
-        pinnedVisible.forEach(k => {
-          lastPinnedKey = k;
+        let left = selectWidth;
+        const autoPinKeys = getLeftPinSeedKeys();
+        const userPinKeys = pinnedKeys.filter(k => !autoPinKeys.includes(k) && k !== 'thaoTac');
+        const leftPinKeys = [...autoPinKeys, ...userPinKeys];
+        let lastLeftPinned = null;
+
+        leftPinKeys.forEach(k => {
+          if (!keys.includes(k)) return;
+          lastLeftPinned = k;
           tableEl.querySelectorAll(`[data-col="${k}"]`).forEach(el => {
             el.classList.add('dt-col-pinned');
             el.classList.remove('dt-col-pinned-edge');
@@ -1587,24 +1596,14 @@
         });
 
         tableEl.querySelectorAll('.dt-col-pinned-edge').forEach(el => el.classList.remove('dt-col-pinned-edge'));
-        const edgeTarget = lastPinnedKey
-          ? tableEl.querySelectorAll(`[data-col="${lastPinnedKey}"].dt-col-pinned`)
-          : tableEl.querySelectorAll('.dt-col-select');
+        const edgeTarget = lastLeftPinned
+          ? tableEl.querySelectorAll(`[data-col="${lastLeftPinned}"].dt-col-pinned`)
+          : (showSelectColumn ? tableEl.querySelectorAll('.dt-col-select') : []);
         edgeTarget.forEach(el => el.classList.add('dt-col-pinned-edge'));
 
-        keys.filter(k => !pinnedKeys.includes(k) && k !== 'thaoTac').forEach(k => {
-          tableEl.querySelectorAll(`[data-col="${k}"]`).forEach(el => {
-            el.classList.remove('dt-col-pinned', 'dt-col-pinned-edge');
-            el.style.left = '';
-          });
-        });
-
-        tableEl.querySelectorAll('.dt-col-pinned-right-edge').forEach(el => el.classList.remove('dt-col-pinned-right-edge'));
         tableEl.querySelectorAll('[data-col="thaoTac"]').forEach(el => {
-          el.classList.remove('dt-col-pinned', 'dt-col-pinned-edge');
           el.classList.add('dt-col-pinned-right', 'dt-col-pinned-right-edge');
           el.style.right = '0px';
-          el.style.left = '';
         });
       }
 
@@ -1749,28 +1748,10 @@
 
       // ── Panel UI
       const panel = document.getElementById('colPanel'+panelId);
-      const visBody = document.getElementById('colVisBody'+panelId);
-      const orderBody = document.getElementById('colOrderBody'+panelId);
-      const widthBody = document.getElementById('colWidthBody'+panelId);
+      const colsBody = document.getElementById('colColsBody'+panelId);
       const densityBody = document.getElementById('colDensityBody'+panelId);
       // pending state for panel
-      let pendingVis = null, pendingOrder = null, pendingWidths = null, pendingDensity = null;
-
-      function renderPanelVis() {
-        pendingVis = colState.map(c=>({key:c.key,visible:c.visible}));
-        visBody.innerHTML = colState.map(c=>`
-          <label class="col-item${c.required?' is-disabled':''}">
-            <input type="checkbox" data-col-key="${c.key}" ${c.visible?'checked':''} ${c.required?'disabled':''} />
-            <span>${esc(c.label)}</span>
-          </label>`).join('');
-        visBody.querySelectorAll('input[data-col-key]').forEach(inp=>{
-          inp.addEventListener('change', ()=>{
-            const k = inp.dataset.colKey;
-            const entry = pendingVis.find(p=>p.key===k);
-            if (entry) entry.visible = inp.checked;
-          });
-        });
-      }
+      let pendingVis = null, pendingOrder = null, pendingDensity = null;
 
       function moveOrderItem(key, direction) {
         const idx = pendingOrder.indexOf(key);
@@ -1778,55 +1759,56 @@
         if (direction === 'up' && idx > 0) {
           pendingOrder.splice(idx, 1);
           pendingOrder.splice(idx - 1, 0, key);
-          renderPanelOrder(false);
+          renderPanelCols(false);
         } else if (direction === 'down' && idx < pendingOrder.length - 1) {
           pendingOrder.splice(idx, 1);
           pendingOrder.splice(idx + 1, 0, key);
-          renderPanelOrder(false);
+          renderPanelCols(false);
         }
       }
 
-      function renderPanelOrder(reset = true) {
-        if (reset) pendingOrder = [...colOrder];
-        const items = pendingOrder.map(k => getCol(k)).filter(Boolean);
-        orderBody.innerHTML = items.map((c, idx)=>`
-          <div class="col-order-item" data-order-key="${c.key}">
+      function renderPanelCols(reset = true) {
+        if (reset) {
+          pendingVis = colState.map(c => ({ key: c.key, visible: c.visible }));
+          pendingOrder = [...colOrder];
+        }
+        const items = pendingOrder
+          .filter(k => k !== 'thaoTac')
+          .map(k => {
+          const c = getCol(k);
+          if (!c) return null;
+          const pv = pendingVis.find(p => p.key === k);
+          const visible = pv ? pv.visible : c.visible;
+          return { ...c, visible };
+        }).filter(Boolean);
+        colsBody.innerHTML = items.map((c, idx) => `
+          <div class="col-cols-item" data-cols-key="${c.key}">
+            <label class="col-cols-check${c.required ? ' is-disabled' : ''}">
+              <input type="checkbox" data-col-key="${c.key}" ${c.visible ? 'checked' : ''} ${c.required ? 'disabled' : ''} />
+            </label>
             <span class="col-order-label">${esc(c.label)}</span>
-            ${pinnedKeys.includes(c.key)?'<span class="col-vis-badge">Ghim</span>':''}
-            ${!c.visible?'<span class="col-vis-badge">Ẩn</span>':''}
+            ${pinnedKeys.includes(c.key) ? '<span class="col-vis-badge">Ghim</span>' : ''}
+            ${!c.visible ? '<span class="col-vis-badge">Ẩn</span>' : ''}
             <div class="col-order-actions">
               <button type="button" class="col-order-move" data-order-action="up" data-order-key="${c.key}"
-                title="Lên" aria-label="Di chuyển ${esc(c.label)} lên"${idx===0?' disabled':''}>▲</button>
+                data-tooltip="Di chuyển lên" aria-label="Di chuyển ${esc(c.label)} lên"${idx === 0 ? ' disabled' : ''}>▲</button>
               <button type="button" class="col-order-move" data-order-action="down" data-order-key="${c.key}"
-                title="Xuống" aria-label="Di chuyển ${esc(c.label)} xuống"${idx===items.length-1?' disabled':''}>▼</button>
+                data-tooltip="Di chuyển xuống" aria-label="Di chuyển ${esc(c.label)} xuống"${idx === items.length - 1 ? ' disabled' : ''}>▼</button>
             </div>
           </div>`).join('');
-        orderBody.querySelectorAll('[data-order-action]').forEach(btn=>{
-          btn.addEventListener('click', e=>{
+        colsBody.querySelectorAll('input[data-col-key]').forEach(inp => {
+          inp.addEventListener('change', () => {
+            const k = inp.dataset.colKey;
+            const entry = pendingVis.find(p => p.key === k);
+            if (entry) entry.visible = inp.checked;
+            renderPanelCols(false);
+          });
+        });
+        colsBody.querySelectorAll('[data-order-action]').forEach(btn => {
+          btn.addEventListener('click', e => {
             e.stopPropagation();
             if (btn.disabled) return;
             moveOrderItem(btn.dataset.orderKey, btn.dataset.orderAction);
-          });
-        });
-      }
-
-      function renderPanelWidth() {
-        pendingWidths = colState
-          .filter(c => c.key !== 'thaoTac')
-          .map(c => ({ key: c.key, w: c.w }));
-        widthBody.innerHTML = pendingWidths.map(item => {
-          const col = getCol(item.key);
-          return `<div class="col-width-item">
-            <span class="col-width-label">${esc(col?.label || item.key)}</span>
-            <input type="number" class="col-width-input" data-col-key="${item.key}"
-              value="${item.w}" min="60" max="800" step="1" aria-label="Độ rộng ${esc(col?.label || item.key)}" />
-            <span class="col-width-unit">px</span>
-          </div>`;
-        }).join('');
-        widthBody.querySelectorAll('.col-width-input').forEach(inp => {
-          inp.addEventListener('input', () => {
-            const entry = pendingWidths.find(p => p.key === inp.dataset.colKey);
-            if (entry) entry.w = Math.max(60, Math.min(800, parseInt(inp.value, 10) || 60));
           });
         });
       }
@@ -1864,9 +1846,7 @@
         document.querySelectorAll('.col-panel').forEach(p=>p.hidden=true);
         if (open) {
           panel.hidden = false;
-          renderPanelVis();
-          renderPanelOrder();
-          renderPanelWidth();
+          renderPanelCols();
           renderPanelDensity(densityBody);
           // reset to first tab
           panel.querySelectorAll('.col-tab').forEach((t,i)=>t.classList.toggle('act',i===0));
@@ -1883,8 +1863,7 @@
           const tabId = tab.dataset.tab;
           panel.querySelectorAll('.col-tab-content').forEach(c=>c.classList.remove('act'));
           document.getElementById(`p${panelId}-${tabId}`)?.classList.add('act');
-          if (tabId==='order') renderPanelOrder();
-          if (tabId==='width') renderPanelWidth();
+          if (tabId==='cols') renderPanelCols();
           if (tabId==='density') renderPanelDensity(densityBody);
         });
       });
@@ -1903,14 +1882,6 @@
           unpinnedOrder = newOrder.filter(k => !pinnedKeys.includes(k));
           rebuildColumnOrder();
         }
-        if (pendingWidths) {
-          pendingWidths.forEach(pw => {
-            const c = getCol(pw.key);
-            if (!c || c.key === 'thaoTac') return;
-            c.w = Math.max(60, Math.min(800, pw.w));
-            c.resized = true;
-          });
-        }
         if (pendingDensity) applyDensity(pendingDensity);
         panel.hidden=true;
         fullRender();
@@ -1921,7 +1892,6 @@
         colState = colsDef.map(c=>({...c,visible:true,w:c.w,resized:false}));
         pinnedKeys = [];
         unpinnedOrder = defaultDataKeys();
-        ensureDefaultTotalLabelPin();
         sortState = {key:null,dir:'asc'};
         selectedRows = new Set();
         panel.hidden=true;
@@ -2080,7 +2050,7 @@
       btnSidebarToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
       const label = collapsed ? 'Mở rộng sidebar' : 'Thu gọn sidebar';
       btnSidebarToggle.setAttribute('aria-label', label);
-      btnSidebarToggle.title = label;
+      btnSidebarToggle.setAttribute('data-tooltip', label);
       try {
         localStorage.setItem(SIDEBAR_COLLAPSED_KEY, collapsed ? '1' : '0');
       } catch (_) {}
@@ -2104,7 +2074,7 @@
       document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
       const label = isDark ? 'Bật giao diện sáng' : 'Bật giao diện tối';
       btnThemeToggle.setAttribute('aria-label', label);
-      btnThemeToggle.title = label;
+      btnThemeToggle.setAttribute('data-tooltip', label);
       try {
         localStorage.setItem(THEME_STORAGE_KEY, isDark ? 'dark' : 'light');
       } catch (_) {}
@@ -2116,8 +2086,71 @@
 
     if (document.documentElement.getAttribute('data-theme') === 'dark') {
       btnThemeToggle.setAttribute('aria-label', 'Bật giao diện sáng');
-      btnThemeToggle.title = 'Bật giao diện sáng';
+      btnThemeToggle.setAttribute('data-tooltip', 'Bật giao diện sáng');
     }
+
+    // Floating tooltip — 1 tooltip duy nhất, render trên body (không bị clip bởi overflow table)
+    (function initFloatingTooltips() {
+      let tipEl = null;
+      let activeEl = null;
+
+      function getTip() {
+        if (!tipEl) {
+          tipEl = document.createElement('div');
+          tipEl.className = 'app-tooltip';
+          tipEl.setAttribute('role', 'tooltip');
+          tipEl.hidden = true;
+          document.body.appendChild(tipEl);
+        }
+        return tipEl;
+      }
+
+      function hideTip() {
+        if (tipEl) tipEl.hidden = true;
+        activeEl = null;
+      }
+
+      function positionTip(el) {
+        const tip = getTip();
+        const rect = el.getBoundingClientRect();
+        const preferBelow = el.closest('.th-menu-wrap') || el.classList.contains('col-panel-close');
+        const gap = 6;
+        let top = preferBelow ? rect.bottom + gap : rect.top - tip.offsetHeight - gap;
+        let left = rect.left + rect.width / 2 - tip.offsetWidth / 2;
+
+        if (top < 8) top = rect.bottom + gap;
+        if (top + tip.offsetHeight > window.innerHeight - 8) {
+          top = rect.top - tip.offsetHeight - gap;
+        }
+        left = Math.max(8, Math.min(left, window.innerWidth - tip.offsetWidth - 8));
+
+        tip.style.top = `${top}px`;
+        tip.style.left = `${left}px`;
+      }
+
+      function showTip(el) {
+        const text = el.getAttribute('data-tooltip');
+        if (!text) return;
+        const tip = getTip();
+        tip.textContent = text;
+        tip.hidden = false;
+        positionTip(el);
+        activeEl = el;
+      }
+
+      document.addEventListener('mouseover', (e) => {
+        const el = e.target.closest('[data-tooltip]');
+        if (el && el !== activeEl) showTip(el);
+      });
+
+      document.addEventListener('mouseout', (e) => {
+        const el = e.target.closest('[data-tooltip]');
+        if (el && (!e.relatedTarget || !el.contains(e.relatedTarget))) hideTip();
+      });
+
+      document.addEventListener('scroll', hideTip, true);
+      window.addEventListener('resize', hideTip);
+    })();
     </script>
   </body>
 </html>
